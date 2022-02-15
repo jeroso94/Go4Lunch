@@ -38,6 +38,7 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.6.0-alpha02'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
 
     /*
         * FIREBASE
@@ -50,6 +51,14 @@ dependencies {
 
     // FIREBASE AUTHENTICATION (pour l'UI)
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
+
+    /*
+        * FACEBOOK BASICS-with analytics (regarding Go4Lunch, for login feature)
+     */
+    implementation 'com.facebook.android:facebook-android-sdk:8.2.0'
+    //implementation 'com.facebook.android:facebook-android-sdk:5.15.0'
+    //implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+    //implementation 'com.facebook.android:facebook-login:[8.1)'
 
     /*
         * TEST

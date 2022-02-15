@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.ActivityMainBinding;
+import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
@@ -16,6 +17,7 @@ import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -52,8 +54,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         List<AuthUI.IdpConfig> providers =
                 Arrays.asList(
                     new AuthUI.IdpConfig.GoogleBuilder().build()
+                    ,new AuthUI.IdpConfig.FacebookBuilder().build()
                 );
                 /*
+                new AuthUI.IdpConfig.GoogleBuilder().build()
                 ,new AuthUI.IdpConfig.FacebookBuilder().build()
                 ,new AuthUI.IdpConfig.EmailBuilder().build()
                 ,new AuthUI.IdpConfig.TwitterBuilder().build()
@@ -61,13 +65,25 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                 );
                 */
 
+        /* TEST - Single authentification
+        List<AuthUI.IdpConfig> providers =
+                Collections.singletonList(new AuthUI.IdpConfig.GoogleBuilder().build());
+        */
+
+        //Setup sign-in layout
+        AuthMethodPickerLayout customLayout = new AuthMethodPickerLayout
+                .Builder(R.layout.signin)
+                .setGoogleButtonId(R.id.signin_button_google)
+                .setFacebookButtonId(R.id.signin_button_facebook)
+                .build();
 
         // Setup sign-in intent
         Intent signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
                 .setTheme(R.style.SignIn)
-                .setLogo(R.drawable.ic_splashscreen_logo_white)
+                .setAuthMethodPickerLayout(customLayout)
+                .setIsSmartLockEnabled(false, true)
                 .build();
         signInLauncher.launch(signInIntent);
     }
