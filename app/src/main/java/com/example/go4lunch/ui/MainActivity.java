@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 
 import com.example.go4lunch.R;
@@ -101,6 +102,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             // Successfully signed in
                 // FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             showSnackBar(getString(R.string.connection_succeed));
+            starthomeActivity();
 
         } else {
             // Sign in failed. If response is null the user canceled the
@@ -123,6 +125,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                 }
             }
         }
+    }
+
+    private void starthomeActivity() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
     }
 
     // SIGN_IN_PROCESS_03--Show Snack Bar in mainLayout
