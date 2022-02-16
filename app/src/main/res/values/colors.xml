@@ -7,4 +7,14 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!--COLORS FOR SIGN-IN LAYOUT-->
+    <color name="signin_facebook">#1565C0</color>
+    <color name="signin_google">#D32F2F</color>
+
+    <!--COLORS FOR HOME ACTIVITY-->
+    <color name="red_500">#F44336</color>
+    <color name="red_700">#D32F2F</color>
+    <color name="lime_200">#E6EE9C</color>
+    <color name="lime_700">#AFB42B</color>
 </resources>

@@ -69,28 +69,30 @@
 
         <Button
             android:id="@+id/signin_button_facebook"
-            android:layout_width="256dp"
+            android:layout_width="272dp"
             android:layout_height="wrap_content"
-            android:background="#1565C0"
+            android:backgroundTint="@color/signin_facebook"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:text="@string/signin_button_facebook"
             android:textAlignment="center"
             android:textColor="#FFE0B2"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:icon="@drawable/com_facebook_button_icon" />
 
         <Button
             android:id="@+id/signin_button_google"
-            android:layout_width="256dp"
+            android:layout_width="272dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:background="#D32F2F"
+            android:backgroundTint="@color/signin_google"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:text="@string/signin_button_google"
             android:textAlignment="center"
             android:textColor="#FFF9C4"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:icon="@drawable/googleg_standard_color_18"
+            app:iconTintMode="multiply" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
