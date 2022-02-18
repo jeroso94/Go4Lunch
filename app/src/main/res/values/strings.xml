@@ -30,4 +30,16 @@
     <string name="bottom_menu_item3">Workmates</string>
     <string name="home_title">I\'m Hungry!</string>
 
+    <!-- HOME ACTIVITY  -   NAVIGATION DRAWER MENU -->
+    <string name="navigation_drawer_item1">YOUR LUNCH</string>
+    <string name="navigation_drawer_item2">SETTINGS</string>
+    <string name="navigation_drawer_item3">LOGOUT</string>
+    <string name="nav_header_background_description">lunch table with 5 people</string>
+    <string name="nav_header_avatar_description">pitcure of avatar</string>
+    <string name="nav_header_profile_name">Surname NAME</string>
+    <string name="nav_header_profile_email">account@email.com</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
 </resources>

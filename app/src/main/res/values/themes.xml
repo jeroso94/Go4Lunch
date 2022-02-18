@@ -12,7 +12,7 @@
         <item name="colorOnSecondary">@color/black</item>
 
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorOnSecondary</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
     </style>
 
     <!-- STYLE FOR MAIN ACTIVITY -->
@@ -35,6 +35,6 @@
 
     <!-- STYLE FOR HOME ACTIVITY -->
     <style name="Home" parent="Theme.Go4Lunch.Global">
-
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 </resources>
