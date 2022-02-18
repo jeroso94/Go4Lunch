@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/mapViewFragment"
+        android:id="@+id/nav_mapViewFragment"
         android:icon="@drawable/ic_baseline_map"
         android:title="@string/bottom_menu_item1" />
     <item
-        android:id="@+id/listViewFragment"
+        android:id="@+id/nav_listViewFragment"
         android:icon="@drawable/ic_baseline_view_list"
         android:title="@string/bottom_menu_item2" />
     <item
-        android:id="@+id/workmatesFragment"
+        android:id="@+id/nav_workmatesFragment"
         android:icon="@drawable/ic_baseline_people"
         android:title="@string/bottom_menu_item3" />
 </menu>
