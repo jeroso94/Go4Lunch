@@ -1,5 +1,7 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
@@ -62,6 +64,12 @@ dependencies {
         * FACEBOOK BASICS-with analytics (regarding Go4Lunch, for login feature)
      */
     implementation 'com.facebook.android:facebook-android-sdk:8.2.0'
+
+    /*
+        * GOOGLE MAPS
+     */
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
 
     /*
         * TEST
