@@ -40,41 +40,62 @@ android {
 }
 
 dependencies {
-
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    /*
+        * UI
+     */
+    // Google material UI
     implementation 'com.google.android.material:material:1.6.0-alpha02'
+    // Android UI
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     implementation 'androidx.navigation:navigation-fragment:2.4.1'
     implementation 'androidx.navigation:navigation-ui:2.4.1'
 
     /*
-        * FIREBASE
+        * ANDROID LIFECYCLE
      */
-
-    // FIREBASE BASICS - Import the Firebase BoM et analytics
-    implementation platform('com.google.firebase:firebase-bom:29.0.4')
-    // Add the dependency for the Firebase SDK for Google Analytics
-    implementation 'com.google.firebase:firebase-analytics'
-
-    // FIREBASE AUTHENTICATION (pour l'UI)
-    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
+    // LIVEDATA to keep data up to date inside the Repository
+    def lifecycle_version = "2.4.1"
+    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
+    // VIEWMODEL to keep integrity of a view inside an activity or fragment.
+    // By using a MapViewModelFactory it creates a ViewModel object depending of the Repository
+    // and the Remote Data Source
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
 
     /*
-        * FACEBOOK BASICS-with analytics (regarding Go4Lunch, for login feature)
+        * WEBSERVICE
+    */
+    // RETROFIT for HTTP requests on APIs
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+
+    /*
+        * GEOLOCATION
      */
+
+    // SDK GOOGLE MAPS
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
+    // SDK GOOGLE PLACES
+    implementation 'com.google.android.libraries.places:places:2.5.0'
+
+    /*
+        * BACKEND - FIREBASE
+    */
+
+    // FIREBASE BASICS - Import the Firebase BoM et analytics
+    // Add the dependency for the Firebase SDK for Google Analytics
+    implementation platform('com.google.firebase:firebase-bom:29.0.4')
+    implementation 'com.google.firebase:firebase-analytics'
+    // FIREBASE AUTHENTICATION (pour l'UI)
+    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
+    // AND FACEBOOK AUTHENTICATION - FACEBOOK BASICS-with analytics (regarding Go4Lunch, for login feature)
     implementation 'com.facebook.android:facebook-android-sdk:8.2.0'
 
     /*
-        * GOOGLE MAPS
+        * ANDROID ROOTS LIBRARIES
      */
-    implementation 'com.google.android.gms:play-services-maps:18.0.2'
-    implementation 'com.google.android.gms:play-services-location:19.0.1'
-
-    /*
-        * GOOGLE PLACES
-     */
-    implementation 'com.google.android.libraries.places:places:2.5.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     /*
         * TEST
