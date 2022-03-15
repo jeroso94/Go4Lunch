@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.go4lunch.R;
-import com.example.go4lunch.data.di.ViewModelFactoryModule;
 import com.example.go4lunch.model.nearby_search.NearbyPlaceModel;
 import com.example.go4lunch.ui.ViewModelFactory;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -57,11 +56,9 @@ public class MapViewFragment extends Fragment {
     private MapViewModel mMapViewModel;
 
     // GOOGLE PLACES with API and MVVM - Instance the ViewModel object (mMapViewModel)
-    // based on the Factory ViewModelFactory (mMapViewModelFactory)
-    // and the Dependency Injection (ViewModelFactoryModule.provideMapViewModelFactory())
+    // based on the Factory ViewModelFactory (mViewModelFactory)
     private void setupViewModel() {
-        ViewModelFactory mMapViewModelFactory = ViewModelFactoryModule.provideMapViewModelFactory(getContext());
-        mMapViewModel = new ViewModelProvider(getActivity(), mMapViewModelFactory).get(MapViewModel.class);
+        mMapViewModel = new ViewModelProvider(getActivity(), ViewModelFactory.getInstance()).get(MapViewModel.class);
     }
 
     public MapViewFragment() {

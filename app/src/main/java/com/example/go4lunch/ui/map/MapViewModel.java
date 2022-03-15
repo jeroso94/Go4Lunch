@@ -14,14 +14,12 @@ import java.util.concurrent.Executor;
  */
 public class MapViewModel extends ViewModel {
     private final PlaceRepository mPlaceDataSource;
-    private final Executor mExecutor;
 
-    public MapViewModel(PlaceRepository placeDataSource, Executor executor) {
+    public MapViewModel(PlaceRepository placeDataSource) {
         mPlaceDataSource = placeDataSource;
-        mExecutor = executor;
     }
 
     public LiveData<List<NearbyPlaceModel>> displayNearbyPlaces(double latitude, double longitude, int radius){
-        return mMapDataSource.requestNearbyPlaces(latitude, longitude, radius);
+        return mPlaceDataSource.requestNearbyPlaces(latitude, longitude, radius);
     }
 }

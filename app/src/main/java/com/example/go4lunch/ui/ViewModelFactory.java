@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.go4lunch.data.di.GoogleRetrofitModule;
 import com.example.go4lunch.data.repository.PlaceRepository;
 import com.example.go4lunch.ui.map.MapViewModel;
 
@@ -25,12 +26,28 @@ import javax.inject.Singleton;
 
 @Singleton
 public class ViewModelFactory implements ViewModelProvider.Factory{
-    private final PlaceRepository mPlaceDataSource;
-    private final Executor mExecutor;
 
-    public ViewModelFactory(PlaceRepository placeDataSource, Executor executor) {
-        mPlaceDataSource = placeDataSource;
-        mExecutor = executor;
+    private static ViewModelFactory factory;
+
+    public static ViewModelFactory getInstance() {
+        if (factory == null) {
+            synchronized (ViewModelFactory.class) {
+                if (factory == null) {
+                    factory = new ViewModelFactory();
+                }
+            }
+        }
+        return factory;
+    }
+
+    // Here is our "graph / tree" of injection : PlaceRepository needs NearbySearchService, and later on, MapViewModel will need PlaceRepository
+    private final PlaceRepository mPlaceDataSource = new PlaceRepository(
+            // We inject the call of NearbySearchService in the Repository constructor
+            GoogleRetrofitModule.provideNearbyPlaces()
+    );
+
+    private ViewModelFactory() {
+        // Required public constructor (empty)
     }
 
     @NonNull
@@ -39,7 +56,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory{
     public <T extends ViewModel> T create(@NonNull Class<T> prototypeClass) {
         if (prototypeClass.isAssignableFrom(MapViewModel.class)) {
             // We inject the Repository in the ViewModel constructor
-            return (T) new MapViewModel(mMapDataSource, mExecutor);
+            return (T) new MapViewModel(mPlaceDataSource);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }
