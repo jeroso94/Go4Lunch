@@ -18,12 +18,12 @@ import retrofit2.Response;
 /**
  * Created by JeroSo94 on 02/03/2022.
  */
-public class MapRepository {
+public class PlaceRepository {
     public static final String PLACE_TYPE = "restaurant";
 
     private final NearbySearchService mNearbySearchService;
 
-    public MapRepository(NearbySearchService nearbySearchService) {
+    public PlaceRepository(NearbySearchService nearbySearchService) {
         mNearbySearchService = nearbySearchService;
     }
 

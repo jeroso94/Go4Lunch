@@ -57,9 +57,10 @@ dependencies {
     def lifecycle_version = "2.4.1"
     implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
     // VIEWMODEL to keep integrity of a view inside an activity or fragment.
-    // By using a MapViewModelFactory it creates a ViewModel object depending of the Repository
+    // By using a ViewModelFactory it creates a ViewModel object depending of the Repository
     // and the Remote Data Source
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
     /*
         * WEBSERVICE

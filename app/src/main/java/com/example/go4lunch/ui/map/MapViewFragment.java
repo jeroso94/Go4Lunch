@@ -1,13 +1,12 @@
 package com.example.go4lunch.ui.map;
 
-import static com.example.go4lunch.BuildConfig.PLACES_API_KEY;
-
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -18,8 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.go4lunch.R;
-import com.example.go4lunch.data.di.MapViewModelFactoryModule;
+import com.example.go4lunch.data.di.ViewModelFactoryModule;
 import com.example.go4lunch.model.nearby_search.NearbyPlaceModel;
+import com.example.go4lunch.ui.ViewModelFactory;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -30,16 +30,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.PlaceLikelihood;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
-import com.google.android.libraries.places.api.net.PlacesClient;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 
 public class MapViewFragment extends Fragment {
 
@@ -67,10 +57,10 @@ public class MapViewFragment extends Fragment {
     private MapViewModel mMapViewModel;
 
     // GOOGLE PLACES with API and MVVM - Instance the ViewModel object (mMapViewModel)
-    // based on the Factory MapViewModelFactory (mMapViewModelFactory)
-    // and the Dependency Injection (MapViewModelFactoryModule.provideMapViewModelFactory())
+    // based on the Factory ViewModelFactory (mMapViewModelFactory)
+    // and the Dependency Injection (ViewModelFactoryModule.provideMapViewModelFactory())
     private void setupViewModel() {
-        MapViewModelFactory mMapViewModelFactory = MapViewModelFactoryModule.provideMapViewModelFactory(getContext());
+        ViewModelFactory mMapViewModelFactory = ViewModelFactoryModule.provideMapViewModelFactory(getContext());
         mMapViewModel = new ViewModelProvider(getActivity(), mMapViewModelFactory).get(MapViewModel.class);
     }
 
@@ -84,11 +74,6 @@ public class MapViewFragment extends Fragment {
 
         //GOOGLE MAPS & PLACES - LOCATION PERMISSION
         getLocationPermission();
-
-        SupportMapFragment mSupportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.frameLayout);
-        if (mSupportMapFragment != null) {
-            mSupportMapFragment.getMapAsync(mOnMapReadyCallback);
-        }
 
         // GOOGLE MAPS - GEOLOCATION - Construct a FusedLocationProviderClient object.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
@@ -106,6 +91,16 @@ public class MapViewFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_map_view, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        SupportMapFragment mSupportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.frameLayout);
+        if (mSupportMapFragment != null) {
+            mSupportMapFragment.getMapAsync(mOnMapReadyCallback);
+        }
     }
 
     // GOOGLE MAPS - Request Location Permission
@@ -149,7 +144,6 @@ public class MapViewFragment extends Fragment {
               */
             if (locationPermissionGranted) {
                 getDeviceLocation(googleMap);
-                showCurrentPlace(googleMap);
             } else {
                 getLocationPermission();
             }
@@ -184,6 +178,7 @@ public class MapViewFragment extends Fragment {
                         .position(deviceLocation)
                         .title("I'm here"));
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(deviceLocation,DEFAULT_ZOOM));
+                showCurrentPlace(googleMap);
             }
         });
     }
@@ -195,7 +190,7 @@ public class MapViewFragment extends Fragment {
         /** GOOGLE PLACES with API and MVVM
          *
          */
-        mMapViewModel.displayNearbyPlaces(mLatitude, mLongitude, RADIUS).observe(getActivity(),mapViewState -> {
+        mMapViewModel.displayNearbyPlaces(mLatitude, mLongitude, RADIUS).observe(getViewLifecycleOwner(),mapViewState -> {
             for (NearbyPlaceModel listOfPlace:mapViewState) {
                 LatLng placeLocation= new LatLng(listOfPlace.getGeometryAttributeForPlace().getLocation().getLat(),
                         listOfPlace.getGeometryAttributeForPlace().getLocation().getLng());

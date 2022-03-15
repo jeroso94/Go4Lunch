@@ -1,11 +1,12 @@
-package com.example.go4lunch.ui.map;
+package com.example.go4lunch.ui;
 
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.go4lunch.data.repository.MapRepository;
+import com.example.go4lunch.data.repository.PlaceRepository;
+import com.example.go4lunch.ui.map.MapViewModel;
 
 import java.util.concurrent.Executor;
 
@@ -14,21 +15,21 @@ import javax.inject.Singleton;
 /**
  * Created by JeroSo94 on 04/03/2022.
  *
- * HomeActivity     -->   MapViewModel   --> MapRepository --> NearbySearchService
- *       View       -->     ViewModel    -->  Repository   --> Datasource (here, a Retrofit Api)
- *                                ↑
- *                      Injection starts here,
- *                      in the ViewModel layer
+ * HomeActivity     -->   MapViewModel   --> PlaceRepository --> NearbySearchService
+ *       View       -->     ViewModel    -->    Repository   --> Datasource (here, a Retrofit Api)
+ *                              ↑
+ *                    Injection starts here,
+ *                    in the ViewModel layer
  *
  */
 
 @Singleton
-public class MapViewModelFactory implements ViewModelProvider.Factory{
-    private final MapRepository mMapDataSource;
+public class ViewModelFactory implements ViewModelProvider.Factory{
+    private final PlaceRepository mPlaceDataSource;
     private final Executor mExecutor;
 
-    public MapViewModelFactory(MapRepository mapDataSource, Executor executor) {
-        mMapDataSource = mapDataSource;
+    public ViewModelFactory(PlaceRepository placeDataSource, Executor executor) {
+        mPlaceDataSource = placeDataSource;
         mExecutor = executor;
     }
 
