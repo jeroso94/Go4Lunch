@@ -53,12 +53,12 @@ public class MapViewFragment extends Fragment {
     private final int RADIUS = 2000;
 
     // MVVM - Object declaration
-    private MapViewModel mMapViewModel;
+    private MapViewModel mapViewModel;
 
     // GOOGLE PLACES with API and MVVM - Instance the ViewModel object (mMapViewModel)
-    // based on the Factory ViewModelFactory (mViewModelFactory)
+    // based on the Factory ViewModelFactory (ViewModelFactory.getInstance())
     private void setupViewModel() {
-        mMapViewModel = new ViewModelProvider(getActivity(), ViewModelFactory.getInstance()).get(MapViewModel.class);
+        mapViewModel = new ViewModelProvider(getActivity(), ViewModelFactory.getInstance()).get(MapViewModel.class);
     }
 
     public MapViewFragment() {
@@ -187,14 +187,14 @@ public class MapViewFragment extends Fragment {
         /** GOOGLE PLACES with API and MVVM
          *
          */
-        mMapViewModel.displayNearbyPlaces(mLatitude, mLongitude, RADIUS).observe(getViewLifecycleOwner(),mapViewState -> {
-            for (NearbyPlaceModel listOfPlace:mapViewState) {
-                LatLng placeLocation= new LatLng(listOfPlace.getGeometryAttributeForPlace().getLocation().getLat(),
-                        listOfPlace.getGeometryAttributeForPlace().getLocation().getLng());
+        mapViewModel.displayNearbyPlaces(mLatitude, mLongitude, RADIUS).observe(getViewLifecycleOwner(), mapViewState -> {
+            for (NearbyPlaceModel place:mapViewState) {
+                LatLng placeLocation= new LatLng(place.getGeometryAttributeForPlace().getLocation().getLat(),
+                        place.getGeometryAttributeForPlace().getLocation().getLng());
                 googleMap.addMarker(new MarkerOptions()
                         .position(placeLocation)
-                        .title(listOfPlace.getName())
-                        .snippet(listOfPlace.getRating().toString()));
+                        .title(place.getName())
+                        .snippet(place.getRating().toString()));
             }
         });
 
