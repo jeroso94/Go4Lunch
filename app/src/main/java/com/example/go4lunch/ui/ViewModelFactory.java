@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.go4lunch.data.di.GoogleRetrofitModule;
 import com.example.go4lunch.data.repository.PlaceRepository;
+import com.example.go4lunch.ui.list.ListViewModel;
 import com.example.go4lunch.ui.map.MapViewModel;
 
 import java.util.concurrent.Executor;
@@ -57,6 +58,11 @@ public class ViewModelFactory implements ViewModelProvider.Factory{
         if (prototypeClass.isAssignableFrom(MapViewModel.class)) {
             // We inject the Repository in the ViewModel constructor
             return (T) new MapViewModel(mPlaceDataSource);
+        }
+
+        if (prototypeClass.isAssignableFrom(ListViewModel.class)) {
+            // We inject the Repository in the ViewModel constructor
+            return (T) new ListViewModel(mPlaceDataSource);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

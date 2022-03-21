@@ -42,4 +42,9 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <!-- HOME ACTIVITY  -   LIST VIEW FRAGMENT/LIST VIEW ADAPTER -->
+    <string name="place_attribute_opennow_true">Open</string>
+    <string name="place_attribute_opennow_false">Closed</string>
+    <string name="go4Lunch_interested_workmates">0</string>
+
 </resources>

@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-
     <LinearLayout
         android:id="@+id/place_attributes_part1"
         android:layout_width="wrap_content"
@@ -82,21 +81,20 @@
                 app:srcCompat="@drawable/ic_baseline_person_outline" />
 
             <TextView
-                android:id="@+id/workmates_counter"
+                android:id="@+id/interested_workmates"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_weight="1"
                 android:text="TextView" />
-
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/rating_star"
+        <RatingBar
+            android:id="@+id/ratingBar"
+            style="?android:attr/ratingBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            app:srcCompat="@drawable/ic_baseline_star_outline" />
+            android:layout_gravity="right"/>
     </LinearLayout>
 
     <ImageView
