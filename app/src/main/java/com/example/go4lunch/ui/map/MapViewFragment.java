@@ -175,19 +175,19 @@ public class MapViewFragment extends Fragment {
                         .position(deviceLocation)
                         .title("I'm here"));
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(deviceLocation,DEFAULT_ZOOM));
-                showCurrentPlace(googleMap);
+                displayView(googleMap);
             }
         });
     }
 
     // GOOGLE PLACES - Show places around the device location
     @SuppressWarnings("MissingPermission")
-    private void showCurrentPlace(GoogleMap googleMap) {
+    private void displayView(GoogleMap googleMap) {
 
         /** GOOGLE PLACES with API and MVVM
          *
          */
-        mapViewModel.displayNearbyPlaces(mLatitude, mLongitude, RADIUS).observe(getViewLifecycleOwner(), mapViewState -> {
+        mapViewModel.loadNearbyPlaces(mLatitude, mLongitude, RADIUS).observe(getViewLifecycleOwner(), mapViewState -> {
             for (NearbyPlaceModel place:mapViewState) {
                 LatLng placeLocation= new LatLng(place.getGeometryAttributeForPlace().getLocation().getLat(),
                         place.getGeometryAttributeForPlace().getLocation().getLng());

@@ -19,7 +19,7 @@ public class MapViewModel extends ViewModel {
         mPlaceDataSource = placeDataSource;
     }
 
-    public LiveData<List<NearbyPlaceModel>> displayNearbyPlaces(double latitude, double longitude, int radius){
+    public LiveData<List<NearbyPlaceModel>> loadNearbyPlaces(double latitude, double longitude, int radius){
         return mPlaceDataSource.requestNearbyPlaces(latitude, longitude, radius);
     }
 }
