@@ -49,19 +49,19 @@ public class ListViewFragment extends Fragment {
     private List<NearbyPlaceModel> mNearbyPlace = new ArrayList<>();
 
     /** MVVM - Object declaration **/
-    private ListViewModel listViewModel;
+    private ListViewModel mListViewModel;
 
     /** The RecyclerView which displays the list of places
      * Suppress warning is safe because variable is initialized in onCreate
      */
     @NonNull
-    private RecyclerView listOfPlaces;
+    private RecyclerView mRecyclerView;
 
     /** GOOGLE PLACES with API and MVVM - Instance the ViewModel object (mMapViewModel)
      * based on the Factory ViewModelFactory (ViewModelFactory.getInstance())
      */
     private void setupViewModel() {
-        listViewModel = new ViewModelProvider(getActivity(), ViewModelFactory.getInstance()).get(ListViewModel.class);
+        mListViewModel = new ViewModelProvider(getActivity(), ViewModelFactory.getInstance()).get(ListViewModel.class);
     }
 
     /** Constructor **/
@@ -103,10 +103,10 @@ public class ListViewFragment extends Fragment {
          * - POPULATE ITEMS IN THE RECYCLERVIEW WIDGET
          */
         View fragmentListView = inflater.inflate(R.layout.fragment_list_view, container, false);
-        listOfPlaces = (RecyclerView) fragmentListView;
-        listOfPlaces.setLayoutManager(new LinearLayoutManager(fragmentListView.getContext(),LinearLayoutManager.VERTICAL, false));
+        mRecyclerView = (RecyclerView) fragmentListView;
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(fragmentListView.getContext(),LinearLayoutManager.VERTICAL, false));
         mListViewAdapter = new ListViewAdapter(mNearbyPlace);
-        listOfPlaces.setAdapter(mListViewAdapter);
+        mRecyclerView.setAdapter(mListViewAdapter);
 
         // Inflate the layout for this fragment
         return fragmentListView;
@@ -159,7 +159,7 @@ public class ListViewFragment extends Fragment {
             public void onComplete(@NonNull Task<Location> task) {
                 deviceLatitude = task.getResult().getLatitude();
                 deviceLongitude = task.getResult().getLongitude();
-                showCurrentPlace();
+                displayView();
                 mListViewAdapter.setLocation(deviceLatitude, deviceLongitude);
             }
         });
@@ -169,12 +169,12 @@ public class ListViewFragment extends Fragment {
      * - Show places around the device location
      */
     @SuppressWarnings("MissingPermission")
-    private void showCurrentPlace() {
+    private void displayView() {
 
         /** GOOGLE PLACES with API and MVVM **/
-        listViewModel.displayNearbyPlaces(deviceLatitude, deviceLongitude, RADIUS).observe(getViewLifecycleOwner(), mapViewState -> {
+        mListViewModel.loadNearbyPlaces(deviceLatitude, deviceLongitude, RADIUS).observe(getViewLifecycleOwner(), listViewState -> {
             mNearbyPlace.clear();
-            mNearbyPlace.addAll(mapViewState);
+            mNearbyPlace.addAll(listViewState);
             mListViewAdapter.notifyDataSetChanged();
         });
     }
