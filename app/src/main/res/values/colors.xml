@@ -11,6 +11,9 @@
     <color name="signin_facebook">#1565C0</color>
     <color name="signin_google">#D32F2F</color>
 
+    <!--COMMON COLORS-->
     <!--COLORS FOR HOME ACTIVITY - NAVIGATION DRAWER MENU-->
-    <color name="nav_menu_background">#FF7043</color>
+    <!--COLORS FOR DETAILS ACTIVITY-->
+    <color name="orange_background">#FF7043</color>
+    <color name="orange_text">#FF7043</color>
 </resources>

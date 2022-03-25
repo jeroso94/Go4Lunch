@@ -1,6 +1,7 @@
 package com.example.go4lunch.model.nearby_search;
 
-import com.example.go4lunch.model.all_search.geometry.GeometryModel;
+import com.example.go4lunch.model.all_searches.PhotoModel;
+import com.example.go4lunch.model.all_searches.geometry.GeometryModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -8,7 +9,7 @@ import java.util.List;
 
 /**
  * Created by JeroSo94 on 01/03/2022.
- * Setup NearbyPlaceModel data model composed with GeometryModel data model
+ * Setup NearbyPlaceModel data model composed with sum of sub data models
  */
 public class NearbyPlaceModel {
     @SerializedName("business_status")

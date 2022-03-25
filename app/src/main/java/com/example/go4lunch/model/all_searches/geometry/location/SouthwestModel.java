@@ -1,4 +1,4 @@
-package com.example.go4lunch.model.all_search.geometry.location;
+package com.example.go4lunch.model.all_searches.geometry.location;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by JeroSo94 on 08/03/2022.
  */
-public class NortheastModel {
+public class SouthwestModel {
     @SerializedName("lat")
     @Expose
     private Double lat;
