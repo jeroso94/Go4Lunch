@@ -42,9 +42,21 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <!-- HOME ACTIVITY  -   LIST VIEW FRAGMENT/LIST VIEW ADAPTER -->
+    <!-- COMMON STRINGS -->
+    <!-- HOME ACTIVITY  -   LIST VIEW FRAGMENT/LIST VIEW ADAPTER
+    - DETAILS ACTIVITY  -->
     <string name="place_attribute_opennow_true">Open</string>
     <string name="place_attribute_opennow_false">Closed</string>
     <string name="go4Lunch_interested_workmates">0</string>
+    <string name="place_attribute_name">Name</string>
+    <string name="place_attribute_address">Address</string>
+    <string name="place_attribute_open_hours">Open hours</string>
+    <string name="place_attribute_distance">Distance(m)</string>
+
+    <!-- DETAILS ACTIVITY  -->
+    <string name="call_label">CALL</string>
+    <string name="like_label">LIKE</string>
+    <string name="website_label">WEBSITE</string>
+
 
 </resources>

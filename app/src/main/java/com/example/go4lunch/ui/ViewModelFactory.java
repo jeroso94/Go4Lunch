@@ -9,15 +9,14 @@ import com.example.go4lunch.data.di.GoogleRetrofitModule;
 import com.example.go4lunch.data.repository.PlaceRepository;
 import com.example.go4lunch.ui.list.ListViewModel;
 import com.example.go4lunch.ui.map.MapViewModel;
-
-import java.util.concurrent.Executor;
+import com.example.go4lunch.ui.place_details.PlaceDetailsViewModel;
 
 import javax.inject.Singleton;
 
 /**
  * Created by JeroSo94 on 04/03/2022.
  *
- * HomeActivity     -->   MapViewModel   --> PlaceRepository --> NearbySearchService
+ * HomeActivity     -->   MapViewModel   --> PlaceRepository --> PlaceService
  *       View       -->     ViewModel    -->    Repository   --> Datasource (here, a Retrofit Api)
  *                              ↑
  *                    Injection starts here,
@@ -41,10 +40,10 @@ public class ViewModelFactory implements ViewModelProvider.Factory{
         return factory;
     }
 
-    // Here is our "graph / tree" of injection : PlaceRepository needs NearbySearchService, and later on, MapViewModel will need PlaceRepository
+    // Here is our "graph / tree" of injection : PlaceRepository needs PlaceService, and later on, MapViewModel will need PlaceRepository
     private final PlaceRepository mPlaceDataSource = new PlaceRepository(
-            // We inject the call of NearbySearchService in the Repository constructor
-            GoogleRetrofitModule.provideNearbyPlaces()
+            // We inject the call of PlaceService in the Repository constructor
+            GoogleRetrofitModule.openRequestChannel()
     );
 
     private ViewModelFactory() {
@@ -64,6 +63,12 @@ public class ViewModelFactory implements ViewModelProvider.Factory{
             // We inject the Repository in the ViewModel constructor
             return (T) new ListViewModel(mPlaceDataSource);
         }
+
+        if (prototypeClass.isAssignableFrom(PlaceDetailsViewModel.class)) {
+            // We inject the Repository in the ViewModel constructor
+            return (T) new PlaceDetailsViewModel(mPlaceDataSource);
+        }
+
         throw new IllegalArgumentException("Unknown ViewModel class");
     }
 }
