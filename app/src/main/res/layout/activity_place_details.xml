@@ -104,9 +104,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
-                android:textStyle="bold"
+                android:text="@string/call_label"
                 android:textColor="@color/orange_text"
-                android:text="@string/call_label" />
+                android:textStyle="bold" />
 
         </LinearLayout>
 

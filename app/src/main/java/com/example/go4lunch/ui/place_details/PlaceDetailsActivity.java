@@ -64,9 +64,11 @@ public class PlaceDetailsActivity extends AppCompatActivity {
             mActivityPlaceDetails.callButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent callIntent = new Intent(Intent.ACTION_CALL);
-                    callIntent.setData(Uri.parse(placeDetailsViewState.getInternationalPhoneNumber()));
-                    startActivity(callIntent);
+                    if (placeDetailsViewState.getInternationalPhoneNumber() != null) {
+                        Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                        callIntent.setData(Uri.parse("tel:" + placeDetailsViewState.getInternationalPhoneNumber()));
+                        startActivity(callIntent);
+                    }
                 }
             });
 
@@ -82,9 +84,11 @@ public class PlaceDetailsActivity extends AppCompatActivity {
             mActivityPlaceDetails.websiteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent websiteIntent = new Intent(Intent.ACTION_VIEW);
-                    websiteIntent.setData(Uri.parse(placeDetailsViewState.getWebsite()));
-                    startActivity(websiteIntent);
+                    if (placeDetailsViewState.getWebsite() != null) {
+                        Intent websiteIntent = new Intent(Intent.ACTION_VIEW);
+                        websiteIntent.setData(Uri.parse(placeDetailsViewState.getWebsite()));
+                        startActivity(websiteIntent);
+                    }
                 }
             });
         });
