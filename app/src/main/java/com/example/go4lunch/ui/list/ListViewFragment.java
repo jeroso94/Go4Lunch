@@ -1,6 +1,7 @@
 package com.example.go4lunch.ui.list;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -19,8 +20,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.go4lunch.R;
+import com.example.go4lunch.databinding.FragmentListViewBinding;
 import com.example.go4lunch.model.nearby_search.NearbyPlaceModel;
 import com.example.go4lunch.ui.ViewModelFactory;
+import com.example.go4lunch.ui.place_details.PlaceDetailsActivity;
+import com.example.go4lunch.utils.ItemClickSupport;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListViewFragment extends Fragment {
+
+    private FragmentListViewBinding mFragmentListView;
 
     /** GEOLOCATION
      * Location Services object which store the GPS&Network location
@@ -102,14 +108,14 @@ public class ListViewFragment extends Fragment {
          * - OVERRIDE THE RECYCLERVIEW WIDGET
          * - POPULATE ITEMS IN THE RECYCLERVIEW WIDGET
          */
-        View fragmentListView = inflater.inflate(R.layout.fragment_list_view, container, false);
-        mRecyclerView = (RecyclerView) fragmentListView;
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(fragmentListView.getContext(),LinearLayoutManager.VERTICAL, false));
+        mFragmentListView = FragmentListViewBinding.inflate(inflater, container, false);
+        mRecyclerView = (RecyclerView) mFragmentListView.listOfPlaces;
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL, false));
         mListViewAdapter = new ListViewAdapter(mNearbyPlace);
         mRecyclerView.setAdapter(mListViewAdapter);
 
         // Inflate the layout for this fragment
-        return fragmentListView;
+        return mFragmentListView.getRoot();
     }
 
     /** GEOLOCATION
@@ -176,6 +182,20 @@ public class ListViewFragment extends Fragment {
             mNearbyPlace.clear();
             mNearbyPlace.addAll(listViewState);
             mListViewAdapter.notifyDataSetChanged();
+
+            ItemClickSupport.addTo(mFragmentListView.listOfPlaces, R.layout.place_attributes)
+                    .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+                        @Override
+                        public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                            NearbyPlaceModel nearbyPlace = listViewState.get(position);
+                            // Start a new PlaceDetailsActivity
+                            Intent placeDetailsIntent = new Intent(getActivity(), PlaceDetailsActivity.class);
+                            placeDetailsIntent.putExtra("PLACE_ID", nearbyPlace.getPlaceId());
+                            startActivity(placeDetailsIntent);
+                        }
+                    });
         });
     }
+
+
 }
