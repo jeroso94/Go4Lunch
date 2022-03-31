@@ -58,5 +58,6 @@
     <string name="like_label">LIKE</string>
     <string name="website_label">WEBSITE</string>
 
-
+    <!-- WORKMATES FRAGMENT  -->
+    <string name="workmate_choice">Workmate choice</string>
 </resources>
