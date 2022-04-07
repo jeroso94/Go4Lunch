@@ -2,13 +2,16 @@ package com.example.go4lunch.Manager;
 
 import android.content.Context;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.go4lunch.data.repository.UserRepository;
 import com.example.go4lunch.model.UserModel;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by JeroSo94 on 29/03/2022.
@@ -34,6 +37,7 @@ public class UserManager {
         }
     }
 
+    /*TODO : Transfert de ces méthodes vers WorkmatesViewModel */
     public CollectionReference getUsersCollection() {return userRepository.getUsersCollection();}
 
     public FirebaseUser getCurrentUser(){
@@ -48,20 +52,8 @@ public class UserManager {
         return userRepository.signOut(context);
     }
 
-    public static void createUser(){
+    public void createUser(){
         userRepository.createUser();
     }
 
-    public Task<UserModel> getUserData(){
-        // Get the user from Firestore and cast it to a User model Object
-        return userRepository.getUserData().continueWith(task -> task.getResult().toObject(UserModel.class)) ;
-    }
-
-    public Task<Void> updateLike(String like){
-        return userRepository.updateLike(like);
-    }
-
-    public Task<Void> updatePlaceId(String placeId){
-        return userRepository.updatePlaceId(placeId);
-    }
 }

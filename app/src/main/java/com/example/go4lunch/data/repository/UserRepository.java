@@ -1,19 +1,33 @@
 package com.example.go4lunch.data.repository;
 
-import android.content.Context;
+import static android.content.ContentValues.TAG;
 
+import android.content.Context;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.go4lunch.model.UserModel;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by JeroSo94 on 29/03/2022.
@@ -22,10 +36,12 @@ public class UserRepository {
     private static final String COLLECTION_NAME = "users";
     private static final String LIKE_FIELD = "like";
     private static final String PLACEID_FIELD = "placeId";
+    private static final String PLACENAME_FIELD = "placeName";
+    private static final String PLACEADDRESS_FIELD = "placeAddress";
 
     private static volatile UserRepository instance;
 
-    private UserRepository() { }
+    public UserRepository() { }
 
     public static UserRepository getInstance() {
         UserRepository result = instance;
@@ -67,58 +83,90 @@ public class UserRepository {
     // Create User in Firestore
     public void createUser() {
         FirebaseUser user = getCurrentUser();
-        if(user != null){
+        if(user == null){
             String uid = user.getUid();
             String username = user.getDisplayName();
             /* TODO: Réviser le code pour obtentir la photo (pas sûr que ce soit une url). Faut-il plutôt la charger depuis sampledata ?*/
             String urlPicture = (user.getPhotoUrl() != null) ? user.getPhotoUrl().toString() : null;
-            String placeId = null;
-            List<String> like= null;
 
-            UserModel userToCreate = new UserModel(uid, username, urlPicture, placeId, like);
-
-            Task<DocumentSnapshot> userData = getUserData();
-            // If the user already exist in Firestore, we get his data (LIKE, PLACE_ID)
-            userData.addOnSuccessListener(documentSnapshot -> {
-                if (documentSnapshot.contains(LIKE_FIELD)){
-                    userToCreate.setLike((List<String>) documentSnapshot.get(LIKE_FIELD));
-                }
-
-                if (documentSnapshot.contains(PLACEID_FIELD)){
-                    userToCreate.setPlaceId((String) documentSnapshot.get(PLACEID_FIELD));
-                }
-                this.getUsersCollection().document(uid).set(userToCreate);
-            });
+            UserModel userToCreate = new UserModel(uid, username, urlPicture, null, null, null, new ArrayList<>());
+            this.getUsersCollection().document(uid).set(userToCreate);
         }
     }
 
     // Get User Data from Firestore
-    public Task<DocumentSnapshot> getUserData(){
+    public LiveData<UserModel> getUserData(){
         String uid = this.getCurrentUserUID();
+        MutableLiveData<UserModel> mutableUser = new MutableLiveData<>();
         if(uid != null){
-            return this.getUsersCollection().document(uid).get();
+            this.getUsersCollection().document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        mutableUser.setValue(task.getResult().toObject(UserModel.class));
+                    } else {
+                        Log.d(TAG, "Error getting document fields or sub-collection: ", task.getException());
+                    }
+                }
+            });
+            return mutableUser;
         }else{
             return null;
         }
     }
 
-    // Update User like
-    public Task<Void> updateLike(String like) {
+    // Get All Users Data from Firestore
+    public LiveData<List<UserModel>> getAllUsersData(){
+        MutableLiveData <List<UserModel>> mutableUsersList = new MutableLiveData<>();
+        List<UserModel> usersList = new ArrayList<>();
+        this.getUsersCollection().get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                usersList.add(document.toObject(UserModel.class));
+                            }
+                            mutableUsersList.setValue(usersList);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+        return mutableUsersList;
+    }
+
+    // Update User likes List
+    public void updateLikeInCollection(String like) {
         String uid = this.getCurrentUserUID();
-        if(uid != null){
-            return this.getUsersCollection().document(uid).update(LIKE_FIELD, LIKE_FIELD + like);
-        }else{
-            return null;
+        List<String> newLikesList = new ArrayList<>();
+        if (uid != null) {
+            this.getUsersCollection().document(uid).get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                UserModel user = task.getResult().toObject(UserModel.class);
+                                assert user != null;
+                                newLikesList.addAll(user.getLikesList());
+                            } else {
+                                Log.d(TAG, "Error getting document fields or sub-collection: ", task.getException());
+                            }
+                        }
+                    });
+            newLikesList.add(newLikesList.size(), like);
+            this.getUsersCollection().document(uid).update(LIKE_FIELD, newLikesList);
         }
     }
 
-    // Update User placeId
-    public Task<Void> updatePlaceId(String placeId) {
+    // Update User's placeData
+    public void updatePlaceDataInCollection(String placeId, String placeName, String placeAddress) {
         String uid = this.getCurrentUserUID();
-        if(uid != null){
-            return this.getUsersCollection().document(uid).update(PLACEID_FIELD, placeId);
-        }else{
-            return null;
+        if(uid != null) {
+            this.getUsersCollection().document(uid).update(PLACEID_FIELD, placeId,
+                    PLACENAME_FIELD, placeName,
+                    PLACEADDRESS_FIELD, placeAddress);
         }
     }
 }

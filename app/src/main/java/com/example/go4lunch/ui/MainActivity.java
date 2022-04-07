@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
 
+import com.example.go4lunch.Manager.UserManager;
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.ActivityMainBinding;
 import com.firebase.ui.auth.AuthMethodPickerLayout;
@@ -23,6 +24,8 @@ import java.util.List;
  * Created by JeroSo94 on 02/02/2022.
  */
 public class MainActivity extends BaseActivity<ActivityMainBinding> {
+
+    private final UserManager userManager = UserManager.getInstance();
 
     /*
      * MainActivity VITAL SETUP
@@ -98,6 +101,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         IdpResponse response = result.getIdpResponse();
         if (result.getResultCode() == RESULT_OK) {
             // Successfully signed in
+            userManager.createUser();
                 // FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             showSnackBar(getString(R.string.connection_succeed));
             starthomeActivity();

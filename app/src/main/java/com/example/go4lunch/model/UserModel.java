@@ -1,7 +1,9 @@
 package com.example.go4lunch.model;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,16 +17,22 @@ public class UserModel {
     @Nullable
     private String placeId;
     @Nullable
-    private List<String> like;
+    private String placeName;
+    @Nullable
+    private String placeAddress;
+    @NonNull
+    private List<String> likesList= new ArrayList<>();
 
     public UserModel(){    }
 
-    public UserModel(String uid, String username, @Nullable String urlPicture, @Nullable String placeId, @Nullable List<String> like) {
+    public UserModel(String uid, String username, @Nullable String urlPicture, @Nullable String placeId, @Nullable String placeName, @Nullable String placeAddress, @NonNull List<String> likesList) {
         this.uid = uid;
         this.username = username;
         this.urlPicture = urlPicture;
         this.placeId = placeId;
-        this.like = like;
+        this.placeName = placeName;
+        this.placeAddress = placeAddress;
+        this.likesList = likesList;
     }
 
     // --- GETTERS ---
@@ -41,12 +49,24 @@ public class UserModel {
         return urlPicture;
     }
 
+    @Nullable
     public String getPlaceId() {
         return placeId;
     }
 
-    public List<String> getLike() {
-        return like;
+    @Nullable
+    public String getPlaceName() {
+        return placeName;
+    }
+
+    @Nullable
+    public String getPlaceAddress() {
+        return placeAddress;
+    }
+
+    @NonNull
+    public List<String> getLikesList() {
+        return likesList;
     }
 
     // --- SETTERS ---
@@ -63,11 +83,19 @@ public class UserModel {
         this.urlPicture = urlPicture;
     }
 
-    public void setPlaceId(String placeId) {
+    public void setPlaceId(@Nullable String placeId) {
         this.placeId = placeId;
     }
 
-    public void setLike(List<String> like) {
-        this.like = like;
+    public void setPlaceName(@Nullable String placeName) {
+        this.placeName = placeName;
+    }
+
+    public void setPlaceAddress(@Nullable String placeAddress) {
+        this.placeAddress = placeAddress;
+    }
+
+    public void setLikesList(@NonNull List<String> likesList) {
+        this.likesList = likesList;
     }
 }

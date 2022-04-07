@@ -5,6 +5,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -15,7 +18,9 @@ import com.example.go4lunch.databinding.PlaceAttributesBinding;
 import com.example.go4lunch.databinding.WorkmateAttributesBinding;
 import com.example.go4lunch.model.UserModel;
 import com.example.go4lunch.model.nearby_search.NearbyPlaceModel;
+import com.example.go4lunch.ui.ViewModelFactory;
 import com.example.go4lunch.ui.list.ListViewAdapter;
+import com.example.go4lunch.ui.place_details.PlaceDetailsViewModel;
 
 import java.util.List;
 
@@ -54,8 +59,8 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.Work
             holder.mWorkmateAttributesViewHolder.picture.setVisibility(View.GONE);
         }
 
-        if (user.getPlaceId() != null) {
-            holder.mWorkmateAttributesViewHolder.workmateChoice.setText(String.format("%s is eating at (%s)", user.getUsername(), user.getPlaceId()));
+        if (user.getPlaceName() != null) {
+            holder.mWorkmateAttributesViewHolder.workmateChoice.setText(String.format("%s is eating at (%s)", user.getUsername(), user.getPlaceName()));
         } else {
             holder.mWorkmateAttributesViewHolder.workmateChoice.setText(String.format("%s hasn't decided yet", user.getUsername()));
         }
