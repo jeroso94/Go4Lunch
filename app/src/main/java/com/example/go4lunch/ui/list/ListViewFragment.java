@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,9 +22,11 @@ import android.view.ViewGroup;
 
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.FragmentListViewBinding;
+import com.example.go4lunch.model.UserModel;
 import com.example.go4lunch.model.nearby_search.NearbyPlaceModel;
 import com.example.go4lunch.ui.ViewModelFactory;
 import com.example.go4lunch.ui.place_details.PlaceDetailsActivity;
+import com.example.go4lunch.ui.workmates.WorkmatesViewModel;
 import com.example.go4lunch.utils.ItemClickSupport;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -49,10 +52,10 @@ public class ListViewFragment extends Fragment {
     /* Geolocation and Nearby Places */
     private double deviceLatitude;
     private double deviceLongitude;
-    private final int RADIUS = 2000;
 
     private ListViewAdapter mListViewAdapter;
-    private List<NearbyPlaceModel> mNearbyPlace = new ArrayList<>();
+    private final List<NearbyPlaceModel> mNearbyPlacesList = new ArrayList<>();
+    private final List<UserModel> mUsersList = new ArrayList<>();
 
     /** MVVM - Object declaration **/
     private ListViewModel mListViewModel;
@@ -111,7 +114,7 @@ public class ListViewFragment extends Fragment {
         mFragmentListView = FragmentListViewBinding.inflate(inflater, container, false);
         mRecyclerView = (RecyclerView) mFragmentListView.listOfPlaces;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL, false));
-        mListViewAdapter = new ListViewAdapter(mNearbyPlace);
+        mListViewAdapter = new ListViewAdapter(mNearbyPlacesList, mUsersList);
         mRecyclerView.setAdapter(mListViewAdapter);
 
         // Inflate the layout for this fragment
@@ -178,24 +181,38 @@ public class ListViewFragment extends Fragment {
     private void displayView() {
 
         /** GOOGLE PLACES with API and MVVM **/
-        mListViewModel.loadNearbyPlaces(deviceLatitude, deviceLongitude, RADIUS).observe(getViewLifecycleOwner(), listViewState -> {
-            mNearbyPlace.clear();
-            mNearbyPlace.addAll(listViewState);
-            mListViewAdapter.notifyDataSetChanged();
+        int RADIUS = 2000;
+        mListViewModel.loadNearbyPlaces(deviceLatitude, deviceLongitude, RADIUS).observe(getViewLifecycleOwner(), new Observer<List<NearbyPlaceModel>>() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onChanged(List<NearbyPlaceModel> listViewState) {
+                mNearbyPlacesList.clear();
+                mNearbyPlacesList.addAll(listViewState);
+                /*TODO: Trier la liste par ordre croissant de distance avec l'utilisateur */
+                mListViewAdapter.notifyDataSetChanged();
 
-            ItemClickSupport.addTo(mFragmentListView.listOfPlaces, R.layout.place_attributes)
-                    .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-                        @Override
-                        public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                            NearbyPlaceModel nearbyPlace = listViewState.get(position);
-                            // Start a new PlaceDetailsActivity
-                            Intent placeDetailsIntent = new Intent(getActivity(), PlaceDetailsActivity.class);
-                            placeDetailsIntent.putExtra("PLACE_ID", nearbyPlace.getPlaceId());
-                            startActivity(placeDetailsIntent);
-                        }
-                    });
+                ItemClickSupport.addTo(mFragmentListView.listOfPlaces, R.layout.place_attributes)
+                        .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+                            @Override
+                            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                                NearbyPlaceModel nearbyPlace = listViewState.get(position);
+                                // Start a new PlaceDetailsActivity
+                                Intent placeDetailsIntent = new Intent(getActivity(), PlaceDetailsActivity.class);
+                                placeDetailsIntent.putExtra("PLACE_ID", nearbyPlace.getPlaceId());
+                                startActivity(placeDetailsIntent);
+                            }
+                        });
+            }
+        });
+
+        mListViewModel.getAllUsers().observe(getViewLifecycleOwner(), new Observer<List<UserModel>>() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onChanged(List<UserModel> workmatesState) {
+                mUsersList.clear();
+                mUsersList.addAll(workmatesState);
+                mListViewAdapter.notifyDataSetChanged();
+            }
         });
     }
-
-
 }

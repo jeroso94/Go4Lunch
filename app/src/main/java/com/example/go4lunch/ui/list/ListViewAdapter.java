@@ -3,6 +3,7 @@ package com.example.go4lunch.ui.list;
 import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewDebug;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.BuildConfig;
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.PlaceAttributesBinding;
+import com.example.go4lunch.model.UserModel;
 import com.example.go4lunch.model.nearby_search.NearbyPlaceModel;
 
 import java.util.List;
@@ -26,11 +28,13 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ListVi
      */
     @NonNull
     private final List<NearbyPlaceModel> mListOfPlaces;
+    private final List<UserModel> mListOfWorkmates;
     private double mDeviceLatitude;
     private double mDeviceLongitude;
 
-    public ListViewAdapter(@NonNull List<NearbyPlaceModel> listOfPlaces) {
+    public ListViewAdapter(@NonNull List<NearbyPlaceModel> listOfPlaces, List<UserModel> listOfWorkmates) {
         mListOfPlaces = listOfPlaces;
+        mListOfWorkmates = listOfWorkmates;
     }
 
     @NonNull
@@ -45,9 +49,6 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ListVi
     @Override
     public void onBindViewHolder(@NonNull ListViewViewHolder holder, int position) {
 
-        /*
-         * TODO: Règle de calcul pour l'affichage des STARS
-         */
         NearbyPlaceModel place = mListOfPlaces.get(position);
         holder.mPlaceAttributes.name.setText(place.getName());
         holder.mPlaceAttributes.address.setText(place.getVicinity());
@@ -71,7 +72,13 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ListVi
         holder.mPlaceAttributes.distance.setText(String.format("%s%s", String.valueOf((int) result[0]), "m"));
 
         /* Interested Workmates */
-        holder.mPlaceAttributes.interestedWorkmates.setText(R.string.go4Lunch_interested_workmates);
+        int workmateCounter = 0;
+        for (UserModel workmate : mListOfWorkmates){
+            if (place.getPlaceId().equals(workmate.getPlaceId())) {
+                workmateCounter += 1;
+            }
+        }
+        holder.mPlaceAttributes.interestedWorkmates.setText(String.valueOf(workmateCounter));
 
         /* RatingBar */
         holder.mPlaceAttributes.ratingBar.setRating(place.getRating().floatValue());
