@@ -2,14 +2,20 @@ package com.example.go4lunch.ui;
 
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.go4lunch.data.di.GoogleRetrofitModule;
 import com.example.go4lunch.data.repository.PlaceRepository;
+import com.example.go4lunch.data.repository.UserRepository;
+import com.example.go4lunch.model.UserModel;
 import com.example.go4lunch.ui.list.ListViewModel;
 import com.example.go4lunch.ui.map.MapViewModel;
 import com.example.go4lunch.ui.place_details.PlaceDetailsViewModel;
+import com.example.go4lunch.ui.workmates.WorkmatesViewModel;
+
+import java.util.List;
 
 import javax.inject.Singleton;
 
@@ -46,6 +52,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory{
             GoogleRetrofitModule.openRequestChannel()
     );
 
+    private final UserRepository mUserDataSource = UserRepository.getInstance();
+
     private ViewModelFactory() {
         // Required public constructor (empty)
     }
@@ -56,19 +64,23 @@ public class ViewModelFactory implements ViewModelProvider.Factory{
     public <T extends ViewModel> T create(@NonNull Class<T> prototypeClass) {
         if (prototypeClass.isAssignableFrom(MapViewModel.class)) {
             // We inject the Repository in the ViewModel constructor
-            return (T) new MapViewModel(mPlaceDataSource);
+            return (T) new MapViewModel(mPlaceDataSource, mUserDataSource);
         }
 
         if (prototypeClass.isAssignableFrom(ListViewModel.class)) {
             // We inject the Repository in the ViewModel constructor
-            return (T) new ListViewModel(mPlaceDataSource);
+            return (T) new ListViewModel(mPlaceDataSource, mUserDataSource);
         }
 
         if (prototypeClass.isAssignableFrom(PlaceDetailsViewModel.class)) {
             // We inject the Repository in the ViewModel constructor
-            return (T) new PlaceDetailsViewModel(mPlaceDataSource);
+            return (T) new PlaceDetailsViewModel(mPlaceDataSource, mUserDataSource);
         }
 
+        if (prototypeClass.isAssignableFrom(WorkmatesViewModel.class)){
+            // We inject the Repository in the ViewModel constructor
+            return (T) new WorkmatesViewModel(mUserDataSource);
+        }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }
 }

@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewbinding.ViewBinding;
 
+import com.example.go4lunch.databinding.ActivityPlaceDetailsBinding;
+
 /**
  * Base Activity class that allow to manage all the common code for the activities
  * @param <T> Should be the type of the viewBinding of your activity see more <a href="https://developer.android.com/topic/libraries/view-binding"> here </a>
@@ -34,5 +36,23 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
         View view = binding.getRoot();
         setContentView(view);
     }
+
+    /* TODO : Refactor les appels DataBinding dans chaque activity par le code suivant
+       @Override
+       public ActivityProfileBinding getViewBinding(){
+       return ActivityProfileBinding.inflate(getLayoutInflater());
+       }
+
+      ET supprimer cet équivalent
+
+      mActivityPlaceDetails = ActivityPlaceDetailsBinding.inflate(getLayoutInflater());
+      setContentView(mActivityPlaceDetails.getRoot());
+
+      TODO: Envisager la possibilité de coder une classe équivalente pour
+       * les appels DataBinding dans chaque fragment
+       * les appels ViewModel
+       * les appels RecyclerView
+       * les appels FusedLocationProviderClient
+    */
 
 }
