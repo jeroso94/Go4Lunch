@@ -88,6 +88,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
+            <!--TODO: Refactorer FROM ImageButton+TextView TO TextView avec attribut drawableTop-->
             <ImageButton
                 android:id="@+id/call_button"
                 android:layout_width="wrap_content"
@@ -123,7 +124,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:backgroundTint="@color/white"
-                app:srcCompat="@drawable/ic_baseline_star_24"
+                app:srcCompat="@drawable/ic_baseline_star_outline"
                 app:tint="@color/orange_text" />
 
             <TextView

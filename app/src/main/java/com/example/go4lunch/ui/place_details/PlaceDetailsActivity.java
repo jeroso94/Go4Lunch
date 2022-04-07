@@ -7,14 +7,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.BuildConfig;
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.ActivityPlaceDetailsBinding;
-import com.example.go4lunch.model.place_details_search.PlaceDetailsModel;
 import com.example.go4lunch.ui.ViewModelFactory;
 
 public class PlaceDetailsActivity extends AppCompatActivity {
@@ -60,6 +58,22 @@ public class PlaceDetailsActivity extends AppCompatActivity {
             mActivityPlaceDetails.ratingBar.setRating(placeDetailsViewState.getRating());
             mActivityPlaceDetails.address.setText(placeDetailsViewState.getVicinity());
 
+            mPlaceDetailsView.loadUserDetails().observe(this, userDetailsViewState -> {
+                if (userDetailsViewState.getPlaceId() != null && placeDetailsViewState.getPlaceId().equals(userDetailsViewState.getPlaceId())) {
+                    mActivityPlaceDetails.floatingActionButton.setImageResource(R.drawable.ic_baseline_check_circle);
+                } else {
+                    mActivityPlaceDetails.floatingActionButton.setImageResource(R.drawable.ic_baseline_check_circle_outline);
+                }
+
+                if (userDetailsViewState.getLikesList().size() > 0 ) {
+                    for (String likedPlace : userDetailsViewState.getLikesList()) {
+                        if (likedPlace.equals(placeDetailsViewState.getPlaceId())) {
+                            mActivityPlaceDetails.likeButton.setImageResource(R.drawable.ic_baseline_star);
+                        }
+                    }
+                }
+            });
+
             /* CALL BUTTON INTERACTION */
             mActivityPlaceDetails.callButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -76,7 +90,8 @@ public class PlaceDetailsActivity extends AppCompatActivity {
             mActivityPlaceDetails.likeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(PlaceDetailsActivity.this, "Hum, Amazing !", Toast.LENGTH_SHORT).show();
+                    mPlaceDetailsView.updateLike(placeDetailsViewState.getPlaceId());
+                    mActivityPlaceDetails.likeButton.setImageResource(R.drawable.ic_baseline_star);
                 }
             });
 
@@ -91,13 +106,15 @@ public class PlaceDetailsActivity extends AppCompatActivity {
                     }
                 }
             });
-        });
 
-        mActivityPlaceDetails.floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mActivityPlaceDetails.floatingActionButton.setImageResource(R.drawable.ic_baseline_check_circle);
-            }
+            /* CHOICE FAB INTERACTION */
+            mActivityPlaceDetails.floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPlaceDetailsView.updateUserChoice(mPlaceId, placeDetailsViewState.getName(), placeDetailsViewState.getVicinity());
+                    mActivityPlaceDetails.floatingActionButton.setImageResource(R.drawable.ic_baseline_check_circle);
+                }
+            });
         });
     }
 
