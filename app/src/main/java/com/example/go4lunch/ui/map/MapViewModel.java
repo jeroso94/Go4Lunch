@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.go4lunch.data.repository.PlaceRepository;
+import com.example.go4lunch.data.repository.UserRepository;
+import com.example.go4lunch.model.UserModel;
 import com.example.go4lunch.model.nearby_search.NearbyPlaceModel;
 
 import java.util.List;
@@ -14,12 +16,18 @@ import java.util.concurrent.Executor;
  */
 public class MapViewModel extends ViewModel {
     private final PlaceRepository mPlaceDataSource;
+    private final UserRepository mUserDataSource;
 
-    public MapViewModel(PlaceRepository placeDataSource) {
+    public MapViewModel(PlaceRepository placeDataSource,UserRepository userDataSource) {
         mPlaceDataSource = placeDataSource;
+        mUserDataSource = userDataSource;
     }
 
     public LiveData<List<NearbyPlaceModel>> loadNearbyPlaces(double latitude, double longitude, int radius){
         return mPlaceDataSource.requestNearbyPlaces(latitude, longitude, radius);
+    }
+
+    public LiveData<List<UserModel>> getAllUsers(){
+        return mUserDataSource.getAllUsersData();
     }
 }
