@@ -29,12 +29,12 @@ public class PlaceRepository {
         mPlaceService = placeService;
     }
 
-    public LiveData<List<NearbyPlaceModel>> requestNearbyPlaces(double latitude, double longitude, int radius){
+    public LiveData<List<NearbyPlaceModel>> readNearbyPlaces(double latitude, double longitude, int radius){
         MutableLiveData <List<NearbyPlaceModel>> listOfPlaces = new MutableLiveData<>();
         String latlng = latitude + "," + longitude;
 
         // let's request the server ('enqueue()' makes the request on another thread)...
-        mPlaceService.submitNearbySearch(BuildConfig.PLACES_API_KEY, latlng, String.valueOf(radius), PLACE_TYPE)
+        mPlaceService.requestNearbySearch(BuildConfig.PLACES_API_KEY, latlng, String.valueOf(radius), PLACE_TYPE)
                 .enqueue(new Callback<NearbyResultModel>() {
             @Override
             public void onResponse(@NonNull Call<NearbyResultModel> call, @NonNull Response<NearbyResultModel> response) {
@@ -53,10 +53,10 @@ public class PlaceRepository {
     return listOfPlaces;
     }
 
-    public LiveData<PlaceDetailsModel> requestDetailsForPlaceId(String placeId){
+    public LiveData<PlaceDetailsModel> readDetailsForPlaceId(String placeId){
         MutableLiveData <PlaceDetailsModel> onePlace = new MutableLiveData<>();
 
-        mPlaceService.submitPlaceDetailsSearch(BuildConfig.PLACES_API_KEY, placeId)
+        mPlaceService.requestPlaceDetailsSearch(BuildConfig.PLACES_API_KEY, placeId)
                 .enqueue(new Callback<PlaceDetailsResultModel>() {
                     @Override
                     public void onResponse(@NonNull Call<PlaceDetailsResultModel> call, @NonNull Response<PlaceDetailsResultModel> response) {

@@ -2,16 +2,10 @@ package com.example.go4lunch.Manager;
 
 import android.content.Context;
 
-import androidx.lifecycle.LiveData;
-
 import com.example.go4lunch.data.repository.UserRepository;
-import com.example.go4lunch.model.UserModel;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.List;
 
 /**
  * Created by JeroSo94 on 29/03/2022.
@@ -38,10 +32,10 @@ public class UserManager {
     }
 
     /*TODO : Transfert de ces méthodes vers WorkmatesViewModel */
-    public CollectionReference getUsersCollection() {return userRepository.getUsersCollection();}
+    public CollectionReference getUsersCollection() {return userRepository.readUsersCollection();}
 
     public FirebaseUser getCurrentUser(){
-        return userRepository.getCurrentUser();
+        return userRepository.readCurrentUser();
     }
 
     public Boolean isCurrentUserLogged(){

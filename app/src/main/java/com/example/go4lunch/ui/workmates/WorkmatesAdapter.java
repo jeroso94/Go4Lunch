@@ -41,8 +41,8 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.Work
     public WorkmatesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // CREATE VIEW HOLDER AND INFLATING ITS XML LAYOUT
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        WorkmateAttributesBinding workmateItems  = WorkmateAttributesBinding.inflate(inflater, parent, false);
-        return new WorkmatesViewHolder(workmateItems);
+        WorkmateAttributesBinding workmateAttributes  = WorkmateAttributesBinding.inflate(inflater, parent, false);
+        return new WorkmatesViewHolder(workmateAttributes);
     }
 
     @Override

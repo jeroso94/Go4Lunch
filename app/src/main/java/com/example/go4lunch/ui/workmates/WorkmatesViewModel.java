@@ -18,7 +18,7 @@ public class WorkmatesViewModel extends ViewModel {
         mUserDataSource = userDataSource;
     }
 
-    public LiveData<List<UserModel>> getAllUsers(){
-        return mUserDataSource.getAllUsersData();
+    public LiveData<List<UserModel>> loadUsers(){
+        return mUserDataSource.readAllUsersData();
     }
 }

@@ -1,7 +1,5 @@
 package com.example.go4lunch.ui.workmates;
 
-import static android.content.ContentValues.TAG;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,22 +19,11 @@ import com.example.go4lunch.Manager.UserManager;
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.FragmentWorkmatesBinding;
 import com.example.go4lunch.model.UserModel;
-import com.example.go4lunch.model.nearby_search.NearbyPlaceModel;
 import com.example.go4lunch.ui.ViewModelFactory;
-import com.example.go4lunch.ui.list.ListViewAdapter;
-import com.example.go4lunch.ui.list.ListViewModel;
 import com.example.go4lunch.ui.place_details.PlaceDetailsActivity;
-import com.example.go4lunch.ui.place_details.PlaceDetailsViewModel;
 import com.example.go4lunch.utils.ItemClickSupport;
-import com.google.android.gms.common.server.converter.StringToIntConverter;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class WorkmatesFragment extends Fragment {
@@ -91,7 +77,7 @@ public class WorkmatesFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     private void displayView() {
-        mWorkmatesViewModel.getAllUsers().observe(getViewLifecycleOwner(), new Observer<List<UserModel>>() {
+        mWorkmatesViewModel.loadUsers().observe(getViewLifecycleOwner(), new Observer<List<UserModel>>() {
             @Override
             public void onChanged(List<UserModel> workmatesState) {
                 mUsersList.clear();

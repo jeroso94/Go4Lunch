@@ -23,10 +23,10 @@ public class ListViewModel extends ViewModel {
     }
 
     public LiveData<List<NearbyPlaceModel>> loadNearbyPlaces(double latitude, double longitude, int radius){
-        return mPlaceDataSource.requestNearbyPlaces(latitude, longitude, radius);
+        return mPlaceDataSource.readNearbyPlaces(latitude, longitude, radius);
     }
 
     public LiveData<List<UserModel>> getAllUsers(){
-        return mUserDataSource.getAllUsersData();
+        return mUserDataSource.readAllUsersData();
     }
 }

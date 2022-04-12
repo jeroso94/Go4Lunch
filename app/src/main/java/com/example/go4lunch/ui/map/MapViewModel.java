@@ -9,7 +9,6 @@ import com.example.go4lunch.model.UserModel;
 import com.example.go4lunch.model.nearby_search.NearbyPlaceModel;
 
 import java.util.List;
-import java.util.concurrent.Executor;
 
 /**
  * Created by JeroSo94 on 04/03/2022.
@@ -24,10 +23,10 @@ public class MapViewModel extends ViewModel {
     }
 
     public LiveData<List<NearbyPlaceModel>> loadNearbyPlaces(double latitude, double longitude, int radius){
-        return mPlaceDataSource.requestNearbyPlaces(latitude, longitude, radius);
+        return mPlaceDataSource.readNearbyPlaces(latitude, longitude, radius);
     }
 
     public LiveData<List<UserModel>> getAllUsers(){
-        return mUserDataSource.getAllUsersData();
+        return mUserDataSource.readAllUsersData();
     }
 }

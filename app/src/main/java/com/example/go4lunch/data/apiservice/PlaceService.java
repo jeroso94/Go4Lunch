@@ -13,10 +13,10 @@ import retrofit2.http.Query;
  */
 public interface PlaceService {
     @GET("/maps/api/place/nearbysearch/json")
-    Call<NearbyResultModel> submitNearbySearch(@Query("key") String apiKey,
-                                               @Query("location") String latlng,
-                                               @Query("radius") String radius,
-                                               @Query("type") String type);
+    Call<NearbyResultModel> requestNearbySearch(@Query("key") String apiKey,
+                                                @Query("location") String latlng,
+                                                @Query("radius") String radius,
+                                                @Query("type") String type);
 
     /*
     @GET("/maps/api/place/nearbysearch/json")
@@ -25,6 +25,6 @@ public interface PlaceService {
      */
 
     @GET("/maps/api/place/details/json")
-    Call<PlaceDetailsResultModel> submitPlaceDetailsSearch(@Query("key") String apiKey,
-                                                           @Query("place_id") String placeId);
+    Call<PlaceDetailsResultModel> requestPlaceDetailsSearch(@Query("key") String apiKey,
+                                                            @Query("place_id") String placeId);
 }

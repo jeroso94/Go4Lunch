@@ -21,13 +21,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.Source;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by JeroSo94 on 29/03/2022.
@@ -57,13 +53,13 @@ public class UserRepository {
     }
 
     @Nullable
-    public static FirebaseUser getCurrentUser(){
+    public static FirebaseUser readCurrentUser(){
         return FirebaseAuth.getInstance().getCurrentUser();
     }
 
     @Nullable
-    public String getCurrentUserUID(){
-        FirebaseUser user = getCurrentUser();
+    public String readCurrentUserUID(){
+        FirebaseUser user = readCurrentUser();
         return (user != null)? user.getUid() : null;
     }
 
@@ -76,13 +72,13 @@ public class UserRepository {
      ********************/
 
     // Get the Collection Reference
-    public CollectionReference getUsersCollection(){
+    public CollectionReference readUsersCollection(){
         return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
     }
 
     // Create User in Firestore
     public void createUser() {
-        FirebaseUser user = getCurrentUser();
+        FirebaseUser user = readCurrentUser();
         if(user == null){
             String uid = user.getUid();
             String username = user.getDisplayName();
@@ -90,16 +86,16 @@ public class UserRepository {
             String urlPicture = (user.getPhotoUrl() != null) ? user.getPhotoUrl().toString() : null;
 
             UserModel userToCreate = new UserModel(uid, username, urlPicture, null, null, null, new ArrayList<>());
-            this.getUsersCollection().document(uid).set(userToCreate);
+            this.readUsersCollection().document(uid).set(userToCreate);
         }
     }
 
     // Get User Data from Firestore
-    public LiveData<UserModel> getUserData(){
-        String uid = this.getCurrentUserUID();
+    public LiveData<UserModel> readUserData(){
+        String uid = this.readCurrentUserUID();
         MutableLiveData<UserModel> mutableUser = new MutableLiveData<>();
         if(uid != null){
-            this.getUsersCollection().document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            this.readUsersCollection().document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
@@ -117,10 +113,10 @@ public class UserRepository {
     }
 
     // Get All Users Data from Firestore
-    public LiveData<List<UserModel>> getAllUsersData(){
+    public LiveData<List<UserModel>> readAllUsersData(){
         MutableLiveData <List<UserModel>> mutableUsersList = new MutableLiveData<>();
         List<UserModel> usersList = new ArrayList<>();
-        this.getUsersCollection().get()
+        this.readUsersCollection().get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -140,10 +136,10 @@ public class UserRepository {
 
     // Update User likes List
     public void updateLikeInCollection(String like) {
-        String uid = this.getCurrentUserUID();
+        String uid = this.readCurrentUserUID();
         List<String> newLikesList = new ArrayList<>();
         if (uid != null) {
-            this.getUsersCollection().document(uid).get()
+            this.readUsersCollection().document(uid).get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -160,16 +156,14 @@ public class UserRepository {
                             }
                         }
                     });
-            newLikesList.add(newLikesList.size(), like);
-            this.getUsersCollection().document(uid).update(LIKE_FIELD, newLikesList);
         }
     }
 
     // Update User's placeData
     public void updatePlaceDataInCollection(String placeId, String placeName, String placeAddress) {
-        String uid = this.getCurrentUserUID();
+        String uid = this.readCurrentUserUID();
         if(uid != null) {
-            this.getUsersCollection().document(uid).update(PLACEID_FIELD, placeId,
+            this.readUsersCollection().document(uid).update(PLACEID_FIELD, placeId,
                     PLACENAME_FIELD, placeName,
                     PLACEADDRESS_FIELD, placeAddress);
         }
