@@ -167,13 +167,13 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView7"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_of_guests"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginStart="8dp"
-        android:text="RecyclerView for workmates" />
+        android:layout_height="match_parent"
+        tools:context=".ui.place_details.PlaceDetailsActivity"
+        tools:itemCount="5"
+        tools:listitem="@layout/guest_attributes" />
 
 
 </LinearLayout>

@@ -20,12 +20,11 @@ public class UserModel {
     private String placeName;
     @Nullable
     private String placeAddress;
-    @NonNull
     private List<String> likesList= new ArrayList<>();
 
     public UserModel(){    }
 
-    public UserModel(String uid, String username, @Nullable String urlPicture, @Nullable String placeId, @Nullable String placeName, @Nullable String placeAddress, @NonNull List<String> likesList) {
+    public UserModel(String uid, String username, @Nullable String urlPicture, @Nullable String placeId, @Nullable String placeName, @Nullable String placeAddress, List<String> likesList) {
         this.uid = uid;
         this.username = username;
         this.urlPicture = urlPicture;
@@ -64,7 +63,6 @@ public class UserModel {
         return placeAddress;
     }
 
-    @NonNull
     public List<String> getLikesList() {
         return likesList;
     }
@@ -95,7 +93,7 @@ public class UserModel {
         this.placeAddress = placeAddress;
     }
 
-    public void setLikesList(@NonNull List<String> likesList) {
+    public void setLikesList(List<String> likesList) {
         this.likesList = likesList;
     }
 }

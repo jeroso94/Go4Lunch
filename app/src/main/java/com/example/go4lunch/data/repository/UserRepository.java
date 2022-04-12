@@ -34,7 +34,7 @@ import java.util.Objects;
  */
 public class UserRepository {
     private static final String COLLECTION_NAME = "users";
-    private static final String LIKE_FIELD = "like";
+    private static final String LIKE_FIELD = "likesList";
     private static final String PLACEID_FIELD = "placeId";
     private static final String PLACENAME_FIELD = "placeName";
     private static final String PLACEADDRESS_FIELD = "placeAddress";
@@ -103,7 +103,8 @@ public class UserRepository {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
-                        mutableUser.setValue(task.getResult().toObject(UserModel.class));
+                        UserModel user = task.getResult().toObject(UserModel.class);
+                        mutableUser.setValue(user);
                     } else {
                         Log.d(TAG, "Error getting document fields or sub-collection: ", task.getException());
                     }
@@ -150,6 +151,10 @@ public class UserRepository {
                                 UserModel user = task.getResult().toObject(UserModel.class);
                                 assert user != null;
                                 newLikesList.addAll(user.getLikesList());
+                                if (!newLikesList.contains(like)){
+                                    newLikesList.add(like);
+                                    readUsersCollection().document(uid).update(LIKE_FIELD, newLikesList);
+                                }
                             } else {
                                 Log.d(TAG, "Error getting document fields or sub-collection: ", task.getException());
                             }

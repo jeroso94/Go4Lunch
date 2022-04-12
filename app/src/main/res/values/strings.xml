@@ -57,6 +57,7 @@
     <string name="call_label">CALL</string>
     <string name="like_label">LIKE</string>
     <string name="website_label">WEBSITE</string>
+    <string name="guest">Guest</string>
 
     <!-- WORKMATES FRAGMENT  -->
     <string name="workmate_choice">Workmate choice</string>
