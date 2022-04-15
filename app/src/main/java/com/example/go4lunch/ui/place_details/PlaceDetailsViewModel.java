@@ -34,11 +34,11 @@ public class PlaceDetailsViewModel extends ViewModel {
         return mUserDataSource.readUserData();
     }
 
-    public void modifyUserChoice(String placeId, String placeName, String placeAddress){
+    public void bookAPlace(String placeId, String placeName, String placeAddress){
         mUserDataSource.updatePlaceDataInCollection(placeId, placeName, placeAddress);
     }
 
-    public void modifyLike(String like){
+    public void likeAPlace(String like){
         mUserDataSource.updateLikeInCollection(like);
     }
 }

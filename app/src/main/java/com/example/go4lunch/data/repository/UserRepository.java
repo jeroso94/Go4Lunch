@@ -139,23 +139,22 @@ public class UserRepository {
         String uid = this.readCurrentUserUID();
         List<String> newLikesList = new ArrayList<>();
         if (uid != null) {
-            this.readUsersCollection().document(uid).get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                UserModel user = task.getResult().toObject(UserModel.class);
-                                assert user != null;
-                                newLikesList.addAll(user.getLikesList());
-                                if (!newLikesList.contains(like)){
-                                    newLikesList.add(like);
-                                    readUsersCollection().document(uid).update(LIKE_FIELD, newLikesList);
-                                }
-                            } else {
-                                Log.d(TAG, "Error getting document fields or sub-collection: ", task.getException());
-                            }
+            this.readUsersCollection().document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        UserModel user = task.getResult().toObject(UserModel.class);
+                        assert user != null;
+                        newLikesList.addAll(user.getLikesList());
+                        if (!newLikesList.contains(like)){
+                            newLikesList.add(like);
+                            readUsersCollection().document(uid).update(LIKE_FIELD, newLikesList);
                         }
-                    });
+                    } else {
+                        Log.d(TAG, "Error getting document fields or sub-collection: ", task.getException());
+                    }
+                }
+            });
         }
     }
 

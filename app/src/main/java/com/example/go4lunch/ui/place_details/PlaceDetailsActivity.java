@@ -90,6 +90,8 @@ public class PlaceDetailsActivity extends AppCompatActivity {
                     }
                 }
 
+                /* TODO: Extraire ce RecyclerView de l'observer "mPlaceDetailsView.loadUserDetails().observe()"
+                *   Remonter au niveau supérieur */
                 /** LAYOUT
                  * - POPULATE ITEMS IN THE RECYCLERVIEW WIDGET
                  */
@@ -119,7 +121,7 @@ public class PlaceDetailsActivity extends AppCompatActivity {
             mActivityPlaceDetails.likeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mPlaceDetailsView.modifyLike(placeDetailsViewState.getPlaceId());
+                    mPlaceDetailsView.likeAPlace(placeDetailsViewState.getPlaceId());
                     mActivityPlaceDetails.likeButton.setImageResource(R.drawable.ic_baseline_star);
                 }
             });
@@ -140,7 +142,7 @@ public class PlaceDetailsActivity extends AppCompatActivity {
             mActivityPlaceDetails.floatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mPlaceDetailsView.modifyUserChoice(mPlaceId, placeDetailsViewState.getName(), placeDetailsViewState.getVicinity());
+                    mPlaceDetailsView.bookAPlace(mPlaceId, placeDetailsViewState.getName(), placeDetailsViewState.getVicinity());
                     mActivityPlaceDetails.floatingActionButton.setImageResource(R.drawable.ic_baseline_check_circle);
                 }
             });
