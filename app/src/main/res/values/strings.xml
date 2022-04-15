@@ -42,6 +42,9 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <!-- HOME ACTIVITY - SEARCH VIEW -->
+    <string name="search_item">Search</string>
+
     <!-- COMMON STRINGS -->
     <!-- HOME ACTIVITY  -   LIST VIEW FRAGMENT/LIST VIEW ADAPTER
     - DETAILS ACTIVITY  -->

@@ -55,6 +55,11 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
     /*
+        * EVENT BUS
+     */
+    implementation 'org.greenrobot:eventbus:3.3.1'
+
+    /*
         * ANDROID LIFECYCLE
      */
     // LIVEDATA to keep data up to date inside the Repository

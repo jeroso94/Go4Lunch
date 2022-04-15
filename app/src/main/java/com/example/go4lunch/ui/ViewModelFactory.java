@@ -81,6 +81,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory{
             // We inject the Repository in the ViewModel constructor
             return (T) new WorkmatesViewModel(mUserDataSource);
         }
+
         throw new IllegalArgumentException("Unknown ViewModel class");
     }
 }

@@ -3,47 +3,87 @@ package com.example.go4lunch.ui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.go4lunch.R;
+import com.example.go4lunch.event.MapViewEvent;
 import com.example.go4lunch.ui.list.ListViewFragment;
 import com.example.go4lunch.ui.map.MapViewFragment;
 import com.example.go4lunch.ui.workmates.WorkmatesFragment;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import org.greenrobot.eventbus.EventBus;
+
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String TAG = HomeActivity.class.getSimpleName();
-    // NAVIGATION DRAWER - GLOBAL OBJECT
+    private final static String SEARCH_VIEW_QUERY_STATUS    = "NO_QUERY";
+    private final static int    RADIUS                      = 2000;
+
+    // GOOGLE MAPS - GEOLOCATION
+    // Location Services object which store the GPS&Network location
+    private FusedLocationProviderClient mFusedLocationProviderClient;
+
+    /** GOOGLE MAPS & PLACES **/
+    // Location Permission
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    private boolean mLocationPermissionGranted;
+    // Geolocation and PlaceAutocomplete
+    private double mLatitude;
+    private double mLongitude;
+
+    // CLASS SCOPE OBJECTS
+    //private static final String TAG = HomeActivity.class.getSimpleName();
     private DrawerLayout mDrawerLayout;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        // GOOGLE PLACE AUTOCOMPLETE - GEOLOCATION - Construct a FusedLocationProviderClient object.
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        //GOOGLE MAPS - LOCATION PERMISSION
+        getLocationPermission();
+        if (mLocationPermissionGranted) {
+            getDeviceLocation();
+        } else {
+            getLocationPermission();
+        }
+
         // NAVIGATION DRAWER - Setup DrawerLayout for NavigationDrawer
         mDrawerLayout = findViewById(R.id.home_drawerlayout);
 
         // NAVIGATION DRAWER + TOOLBAR - Setup toolbar as an ActionBar
-        Toolbar mToolbar = findViewById(R.id.home_toolbar);
+        mToolbar = findViewById(R.id.home_toolbar);
         setSupportActionBar(mToolbar);
 
         // NAVIGATION DRAWER + TOOLBAR - Setup Hamburger Icon in the ActionBar and connect to DrawerLayout
-        ActionBarDrawerToggle mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawerLayout.addDrawerListener(mToggle);
-        mToggle.syncState();
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
 
         // NAVIGATION DRAWER - Setup NavigationView
-        NavigationView mNavigationView = findViewById(R.id.home_nav_view);
-        mNavigationView.setNavigationItemSelectedListener(this);
+        NavigationView navigationView = findViewById(R.id.home_nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         // BOTTOM NAVIGATION VIEW - Setup BottomNavigationView
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -51,6 +91,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if(savedInstanceState == null) {
             bottomNavigationView.setSelectedItemId(R.id.nav_mapViewFragment);
         }
+
+        // SEARCH VIEW - Setup SearchView
+        SearchView searchView = findViewById(R.id.home_searchview);
+        searchView.setOnQueryTextListener(mOnQueryTextListener);
+        searchView.setQueryHint("Type here to search");
+        searchView.setBackgroundColor(getResources().getColor(R.color.white));
     }
 
     // NAVIGATION DRAWER & ANDROID UI - When BACK is pressed
@@ -64,32 +110,50 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    //SEARCH VIEW
+    private SearchView.OnQueryTextListener mOnQueryTextListener = new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            EventBus.getDefault().post(new MapViewEvent(query, mLatitude, mLongitude, RADIUS));
+            MapViewFragment mapViewFragment = new MapViewFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, mapViewFragment).commit();
+            //showToast("You clicked ENTER");
+            return false;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            return false;
+        }
+    };
+
     //BOTTOM NAVIGATION - When an item is selected
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.nav_mapViewFragment:
-                    MapViewFragment mMapViewFragment = new MapViewFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, mMapViewFragment).commit();
+                    EventBus.getDefault().post(new MapViewEvent(SEARCH_VIEW_QUERY_STATUS, mLatitude, mLongitude, RADIUS));
+                    MapViewFragment mapViewFragment = new MapViewFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, mapViewFragment).commit();
 
                     /*
                     // GOOGLE MAPS - Display the map
-                    SupportMapFragment mMapViewFragment = SupportMapFragment.newInstance();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, mMapViewFragment).commit();
-                    mMapViewFragment.getMapAsync(mOnMapReadyCallback);
+                    SupportMapFragment mapViewFragment = SupportMapFragment.newInstance();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, mapViewFragment).commit();
+                    mapViewFragment.getMapAsync(mOnMapReadyCallback);
                      */
 
                     return true;
 
                 case R.id.nav_listViewFragment:
-                    ListViewFragment mListViewFragment = new ListViewFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, mListViewFragment).commit();
+                    ListViewFragment listViewFragment = new ListViewFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, listViewFragment).commit();
                     return true;
 
                 case R.id.nav_workmatesFragment:
-                    WorkmatesFragment mWorkmatesFragment = new WorkmatesFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, mWorkmatesFragment).commit();
+                    WorkmatesFragment workmatesFragment = new WorkmatesFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, workmatesFragment).commit();
                     return true;
             }
             return false;
@@ -114,6 +178,50 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    // GOOGLE PLACE AUTOCOMPLETE - Request Location Permission
+    private void getLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mLocationPermissionGranted = true;
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
+    }
+
+    // GOOGLE PLACE AUTO COMPLETE - What's happen with the Location Permission result
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        mLocationPermissionGranted = false;
+        if (requestCode
+                == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {
+            // If request is cancelled, the result arrays are empty.
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                mLocationPermissionGranted = true;
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    // GOOGLE PLACE AUTOCOMPLETE - Display the device location on the map
+    @SuppressLint("MissingPermission")
+    private void getDeviceLocation() {
+        Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
+        locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                mLatitude = task.getResult().getLatitude();
+                mLongitude = task.getResult().getLongitude();
+            }
+        });
     }
 
     private void showToast(String message) {

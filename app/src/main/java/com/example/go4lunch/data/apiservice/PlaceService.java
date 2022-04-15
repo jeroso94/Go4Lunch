@@ -1,6 +1,7 @@
 package com.example.go4lunch.data.apiservice;
 
 import com.example.go4lunch.model.nearby_search.NearbyResultModel;
+import com.example.go4lunch.model.place_autocomplete.PlaceAutocompleteResultModel;
 import com.example.go4lunch.model.place_details_search.PlaceDetailsResultModel;
 
 import retrofit2.Call;
@@ -27,4 +28,11 @@ public interface PlaceService {
     @GET("/maps/api/place/details/json")
     Call<PlaceDetailsResultModel> requestPlaceDetailsSearch(@Query("key") String apiKey,
                                                             @Query("place_id") String placeId);
+
+    @GET("/maps/api/place/autocomplete/json")
+    Call<PlaceAutocompleteResultModel> requestPlacesPrediction(@Query("key") String apiKey,
+                                                               @Query("input") String input,
+                                                               @Query("location") String latlng,
+                                                               @Query("radius") String radius,
+                                                               @Query("type") String type);
 }
