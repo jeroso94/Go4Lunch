@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.go4lunch.BuildConfig;
 import com.example.go4lunch.data.apiservice.PlaceService;
+import com.example.go4lunch.model.all_searches.geometry.location.LocationModel;
 import com.example.go4lunch.model.nearby_search.NearbyPlaceModel;
 import com.example.go4lunch.model.nearby_search.NearbyResultModel;
 import com.example.go4lunch.model.place_autocomplete.PlaceAutocompleteResultModel;
@@ -25,6 +26,10 @@ import retrofit2.Response;
 public class PlaceRepository {
     public static final String PLACE_TYPE = "restaurant";
     public static final String PLACE_AUTOCOMPLETE_TYPE = "establishment";
+
+    private final MutableLiveData<String> mSearchViewQuery = new MutableLiveData<>();
+    private final MutableLiveData<LocationModel> mMyLocation = new MutableLiveData<>();
+    private final int RADIUS = 2000;
 
     private final PlaceService mPlaceService;
 
@@ -82,7 +87,7 @@ public class PlaceRepository {
         MutableLiveData <List<PlacePredictionModel>> listOfPlacesPrediction = new MutableLiveData<>();
         String latlng = latitude + "," + longitude;
 
-        mPlaceService.requestPlacesPrediction(BuildConfig.PLACES_API_KEY, latlng, input, String.valueOf(radius), PLACE_AUTOCOMPLETE_TYPE)
+        mPlaceService.requestPlacesPrediction(BuildConfig.PLACES_API_KEY, input, latlng, String.valueOf(radius), PLACE_AUTOCOMPLETE_TYPE)
                 .enqueue(new Callback<PlaceAutocompleteResultModel>() {
                     @Override
                     public void onResponse(@NonNull Call<PlaceAutocompleteResultModel> call, @NonNull Response<PlaceAutocompleteResultModel> response) {
@@ -99,5 +104,27 @@ public class PlaceRepository {
                     }
                 });
         return listOfPlacesPrediction;
+    }
+
+    /* GETTERS */
+    public LiveData<String> getSearchViewQuery() {
+        return mSearchViewQuery;
+    }
+
+    public LiveData<LocationModel> getMyLocation() {
+        return mMyLocation;
+    }
+
+    public int getRADIUS() {
+        return RADIUS;
+    }
+
+    /* SETTERS */
+    public void setSearchViewQuery(String input){
+        mSearchViewQuery.setValue(input);
+    }
+
+    public void setMyLocation(LocationModel myLocation) {
+        mMyLocation.setValue(myLocation);
     }
 }

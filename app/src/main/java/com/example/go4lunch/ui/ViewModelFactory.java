@@ -2,20 +2,16 @@ package com.example.go4lunch.ui;
 
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.go4lunch.data.di.GoogleRetrofitModule;
 import com.example.go4lunch.data.repository.PlaceRepository;
 import com.example.go4lunch.data.repository.UserRepository;
-import com.example.go4lunch.model.UserModel;
 import com.example.go4lunch.ui.list.ListViewModel;
 import com.example.go4lunch.ui.map.MapViewModel;
 import com.example.go4lunch.ui.place_details.PlaceDetailsViewModel;
 import com.example.go4lunch.ui.workmates.WorkmatesViewModel;
-
-import java.util.List;
 
 import javax.inject.Singleton;
 
@@ -82,6 +78,10 @@ public class ViewModelFactory implements ViewModelProvider.Factory{
             return (T) new WorkmatesViewModel(mUserDataSource);
         }
 
+        if (prototypeClass.isAssignableFrom(HomeViewModel.class)) {
+            // We inject the Repository in the ViewModel constructor
+            return (T) new HomeViewModel(mPlaceDataSource);
+        }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }
 }

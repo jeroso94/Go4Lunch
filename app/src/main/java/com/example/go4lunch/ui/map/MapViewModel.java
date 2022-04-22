@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.go4lunch.data.repository.PlaceRepository;
 import com.example.go4lunch.data.repository.UserRepository;
 import com.example.go4lunch.model.UserModel;
+import com.example.go4lunch.model.all_searches.geometry.location.LocationModel;
 import com.example.go4lunch.model.nearby_search.NearbyPlaceModel;
 import com.example.go4lunch.model.place_autocomplete.PlacePredictionModel;
 import com.example.go4lunch.model.place_details_search.PlaceDetailsModel;
@@ -38,5 +39,17 @@ public class MapViewModel extends ViewModel {
 
     public LiveData<PlaceDetailsModel> loadPlaceDetails(String placeId){
         return mPlaceDataSource.readDetailsForPlaceId(placeId);
+    }
+
+    /* GETTERS */
+    public LiveData<String> getSearchViewQuery(){
+        return mPlaceDataSource.getSearchViewQuery();
+    }
+    public LiveData<LocationModel> getMyLocation() {
+        return mPlaceDataSource.getMyLocation();
+    }
+
+    public Integer getRADIUS(){
+        return mPlaceDataSource.getRADIUS();
     }
 }

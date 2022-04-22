@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
@@ -14,10 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.go4lunch.R;
-import com.example.go4lunch.event.MapViewEvent;
 import com.example.go4lunch.model.UserModel;
+import com.example.go4lunch.model.all_searches.geometry.location.LocationModel;
 import com.example.go4lunch.model.nearby_search.NearbyPlaceModel;
 import com.example.go4lunch.model.place_autocomplete.PlacePredictionModel;
+import com.example.go4lunch.ui.HomeViewModel;
 import com.example.go4lunch.ui.ViewModelFactory;
 import com.example.go4lunch.ui.place_details.PlaceDetailsActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,9 +31,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MapViewFragment extends Fragment {
@@ -46,8 +46,8 @@ public class MapViewFragment extends Fragment {
 
     /** GOOGLE MAPS & PLACES **/
     // Geolocation and Nearby Places
-    private double mLatitude;
-    private double mLongitude;
+    private GoogleMap mGoogleMap;
+    private LocationModel mMyLocation;
     private int mRadius;
 
     // Search View
@@ -59,7 +59,7 @@ public class MapViewFragment extends Fragment {
     // GOOGLE PLACES with API and MVVM - Instance the ViewModel object (mMapViewModel)
     // based on the Factory ViewModelFactory (ViewModelFactory.getInstance())
     private void setupViewModel() {
-        mMapViewModel = new ViewModelProvider(getActivity(), ViewModelFactory.getInstance()).get(MapViewModel.class);
+        mMapViewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MapViewModel.class);
     }
 
     public MapViewFragment() {
@@ -100,7 +100,16 @@ public class MapViewFragment extends Fragment {
             /** GOOGLE MAPS Sydney location sample - onMapReady() snippet
             getSydneyLocation();
               */
-            displayView(googleMap);
+            mGoogleMap = googleMap;
+            mRadius = mMapViewModel.getRADIUS();
+
+            mMapViewModel.getMyLocation().observe(getViewLifecycleOwner(), new Observer<LocationModel>() {
+                @Override
+                public void onChanged(LocationModel locationViewState) {
+                    mMyLocation = locationViewState;
+                    loadSearchViewData();
+                }
+            });
         }
         /** GOOGLE MAPS Sydney location sample - getSydneyLocation() snippet
         private void getSydneyLocation() {
@@ -114,9 +123,16 @@ public class MapViewFragment extends Fragment {
           */
     };
 
+    private void loadSearchViewData() {
+        mMapViewModel.getSearchViewQuery().observe(getViewLifecycleOwner(), searchViewQueryViewState ->{
+            mSearchViewQuery = searchViewQueryViewState;
+            displayView();
+        });
+    }
+
     // GOOGLE MAPS - Display the device location on the map
     @SuppressLint("MissingPermission")
-    private void loadMyLocationOnMap(GoogleMap googleMap) {
+    private void loadMyLocationOnMap() {
         /** Debug googleMarker */
         /*
         googleMap.addMarker(new MarkerOptions()
@@ -125,39 +141,40 @@ public class MapViewFragment extends Fragment {
          */
 
         // Enable "MyLocation" layer and "MyLocation" button
-        googleMap.setMyLocationEnabled(true);
-        googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-        LatLng deviceLocation= new LatLng(mLatitude, mLongitude);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(deviceLocation,DEFAULT_ZOOM));
+        mGoogleMap.setMyLocationEnabled(true);
+        mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        LatLng deviceLocation= new LatLng(mMyLocation.getLat(), mMyLocation.getLng());
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(deviceLocation,DEFAULT_ZOOM));
     }
 
     // GOOGLE PLACES - Show places around the device location
     @SuppressWarnings("MissingPermission")
-    private void displayView(GoogleMap googleMap) {
+    private void displayView() {
         if (mSearchViewQuery.equals("NO_QUERY")) {
-            loadMyLocationOnMap(googleMap);
+            loadMyLocationOnMap();
 
             /* GOOGLE PLACES with API and MVVM */
-            mMapViewModel.loadNearbyPlaces(mLatitude, mLongitude, mRadius).observe(getViewLifecycleOwner(), mapViewState -> {
+            mMapViewModel.loadNearbyPlaces(mMyLocation.getLat(), mMyLocation.getLng(), mRadius).observe(getViewLifecycleOwner(), mapViewState -> {
                 for (NearbyPlaceModel place : mapViewState) {
                     LatLng placeLocation = new LatLng(place.getGeometryAttributeForPlace().getLocation().getLat(),
                             place.getGeometryAttributeForPlace().getLocation().getLng());
 
                     /* We change the Marker's color if 1+ interested workmates counted */
                     if (countWorkmatesForAPlace(place, null) > 0 ) {
-                        googleMap.addMarker(new MarkerOptions()
+                        Marker marker = mGoogleMap.addMarker(new MarkerOptions()
                                 .position(placeLocation)
                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                                 .title(place.getName())
                                 .snippet(place.getVicinity()));
+                        marker.setTag(place.getPlaceId());
                     } else {
-                        googleMap.addMarker(new MarkerOptions()
+                        Marker marker = mGoogleMap.addMarker(new MarkerOptions()
                                 .position(placeLocation)
                                 .title(place.getName())
                                 .snippet(place.getVicinity()));
+                        marker.setTag(place.getPlaceId());
                     }
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(placeLocation,DEFAULT_ZOOM));
-                    loadPlaceDetailsActivityOnMarkerClick(googleMap, place, null);
+                    loadPlaceDetailsActivityOnMarkerClick(place, null);
                 }
             });
             /** GOOGLE PLACE with SDK - Request places
@@ -190,27 +207,29 @@ public class MapViewFragment extends Fragment {
              */
 
         } else {
-            mMapViewModel.loadPlacesPrediction(mSearchViewQuery, mLatitude, mLongitude, mRadius).observe(getViewLifecycleOwner(), searchViewState -> {
+            mMapViewModel.loadPlacesPrediction(mSearchViewQuery, mMyLocation.getLat(), mMyLocation.getLng(), mRadius).observe(getViewLifecycleOwner(), searchViewState -> {
+                mGoogleMap.clear();
                 for (PlacePredictionModel placePrediction : searchViewState) {
                     mMapViewModel.loadPlaceDetails(placePrediction.getPlaceId()).observe(getViewLifecycleOwner(), placeDetailsViewState -> {
                         LatLng placeLocation = new LatLng(placeDetailsViewState.getGeometry().getLocation().getLat(),
                                 placeDetailsViewState.getGeometry().getLocation().getLng());
 
                         if (countWorkmatesForAPlace(null, placePrediction) > 0 ) {
-                            googleMap.addMarker(new MarkerOptions()
+                            Marker marker = mGoogleMap.addMarker(new MarkerOptions()
                                     .position(placeLocation)
                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                                     .title(placeDetailsViewState.getName())
                                     .snippet(placeDetailsViewState.getVicinity()));
+                            marker.setTag(placePrediction.getPlaceId());
                         } else {
-                            googleMap.addMarker(new MarkerOptions()
+                            Marker marker = mGoogleMap.addMarker(new MarkerOptions()
                                     .position(placeLocation)
                                     .title(placeDetailsViewState.getName())
                                     .snippet(placeDetailsViewState.getVicinity()));
+                            marker.setTag(placePrediction.getPlaceId());
                         }
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(placeLocation,DEFAULT_ZOOM));
                     });
-                    loadPlaceDetailsActivityOnMarkerClick(googleMap, null, placePrediction);
+                    loadPlaceDetailsActivityOnMarkerClick(null, placePrediction);
                 }
             });
         }
@@ -235,8 +254,8 @@ public class MapViewFragment extends Fragment {
         return workmateCounter.get();
     }
 
-    private void loadPlaceDetailsActivityOnMarkerClick(GoogleMap googleMap, NearbyPlaceModel place, PlacePredictionModel placePrediction) {
-        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+    private void loadPlaceDetailsActivityOnMarkerClick(NearbyPlaceModel place, PlacePredictionModel placePrediction) {
+        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
                 /* DEBUG Google Marker Click */
@@ -244,12 +263,9 @@ public class MapViewFragment extends Fragment {
                                 String markerName = marker.getTitle();
                                 Toast.makeText(getContext(), "Clicked location is " + markerName, Toast.LENGTH_SHORT).show();
                                 */
+                String placeId = (String) marker.getTag();
                 Intent placeDetailsIntent = new Intent(MapViewFragment.this.getActivity(), PlaceDetailsActivity.class);
-                if (place != null && placePrediction == null) {
-                    placeDetailsIntent.putExtra("PLACE_ID", place.getPlaceId());
-                } else if (place == null && placePrediction != null) {
-                    placeDetailsIntent.putExtra("PLACE_ID", placePrediction.getPlaceId());
-                }
+                placeDetailsIntent.putExtra("PLACE_ID", placeId);
                 MapViewFragment.this.startActivity(placeDetailsIntent);
 
                 // Return false to indicate that we have not consumed the event and that we wish
@@ -258,25 +274,5 @@ public class MapViewFragment extends Fragment {
                 return false;
             }
         });
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Subscribe
-    public void onMapView(MapViewEvent event) {
-        mSearchViewQuery = event.mSearchViewQuery;
-        mLatitude = event.mLatitude;
-        mLongitude = event.mLongitude;
-        mRadius = event.mRadius;
     }
 }

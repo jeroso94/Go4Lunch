@@ -9,6 +9,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
@@ -18,7 +19,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.go4lunch.R;
-import com.example.go4lunch.event.MapViewEvent;
+import com.example.go4lunch.model.all_searches.geometry.location.LocationModel;
 import com.example.go4lunch.ui.list.ListViewFragment;
 import com.example.go4lunch.ui.map.MapViewFragment;
 import com.example.go4lunch.ui.workmates.WorkmatesFragment;
@@ -29,12 +30,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-import org.greenrobot.eventbus.EventBus;
-
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private final static String SEARCH_VIEW_QUERY_STATUS    = "NO_QUERY";
-    private final static int    RADIUS                      = 2000;
 
     // GOOGLE MAPS - GEOLOCATION
     // Location Services object which store the GPS&Network location
@@ -45,13 +43,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean mLocationPermissionGranted;
     // Geolocation and PlaceAutocomplete
-    private double mLatitude;
-    private double mLongitude;
+    //private double mLatitude;
+    //private double mLongitude;
+
+    // MVVM - Object declaration
+    private HomeViewModel mHomeViewModel;
 
     // CLASS SCOPE OBJECTS
     //private static final String TAG = HomeActivity.class.getSimpleName();
     private DrawerLayout mDrawerLayout;
     private Toolbar mToolbar;
+    private MapViewFragment mapViewFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,12 +71,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             getLocationPermission();
         }
 
+        setupViewModel();
+
         // NAVIGATION DRAWER - Setup DrawerLayout for NavigationDrawer
         mDrawerLayout = findViewById(R.id.home_drawerlayout);
 
         // NAVIGATION DRAWER + TOOLBAR - Setup toolbar as an ActionBar
         mToolbar = findViewById(R.id.home_toolbar);
         setSupportActionBar(mToolbar);
+
+        mapViewFragment = new MapViewFragment();
 
         // NAVIGATION DRAWER + TOOLBAR - Setup Hamburger Icon in the ActionBar and connect to DrawerLayout
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -114,9 +120,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private SearchView.OnQueryTextListener mOnQueryTextListener = new SearchView.OnQueryTextListener() {
         @Override
         public boolean onQueryTextSubmit(String query) {
-            EventBus.getDefault().post(new MapViewEvent(query, mLatitude, mLongitude, RADIUS));
-            MapViewFragment mapViewFragment = new MapViewFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, mapViewFragment).commit();
+            mHomeViewModel.setSearchViewQuery(query);
             //showToast("You clicked ENTER");
             return false;
         }
@@ -133,8 +137,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.nav_mapViewFragment:
-                    EventBus.getDefault().post(new MapViewEvent(SEARCH_VIEW_QUERY_STATUS, mLatitude, mLongitude, RADIUS));
-                    MapViewFragment mapViewFragment = new MapViewFragment();
+                    mHomeViewModel.setSearchViewQuery(SEARCH_VIEW_QUERY_STATUS);
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, mapViewFragment).commit();
 
                     /*
@@ -218,10 +221,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
-                mLatitude = task.getResult().getLatitude();
-                mLongitude = task.getResult().getLongitude();
+                LocationModel myLocation = new LocationModel();
+                myLocation.setLat(task.getResult().getLatitude());
+                myLocation.setLng(task.getResult().getLongitude());
+                mHomeViewModel.setMyLocation(myLocation);
             }
         });
+    }
+
+    private void setupViewModel() {
+        mHomeViewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(HomeViewModel.class);
     }
 
     private void showToast(String message) {
