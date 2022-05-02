@@ -29,7 +29,7 @@ public interface PlaceService {
     Call<PlaceDetailsResultModel> requestPlaceDetailsSearch(@Query("key") String apiKey,
                                                             @Query("place_id") String placeId);
 
-    @GET("/maps/api/place/autocomplete/json")
+    @GET("/maps/api/place/autocomplete/json?strictbounds=true")
     Call<PlaceAutocompleteResultModel> requestPlacesPrediction(@Query("key") String apiKey,
                                                                @Query("input") String input,
                                                                @Query("location") String latlng,
