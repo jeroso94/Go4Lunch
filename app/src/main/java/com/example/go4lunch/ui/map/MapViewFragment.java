@@ -19,7 +19,6 @@ import com.example.go4lunch.model.UserModel;
 import com.example.go4lunch.model.all_searches.geometry.location.LocationModel;
 import com.example.go4lunch.model.nearby_search.NearbyPlaceModel;
 import com.example.go4lunch.model.place_autocomplete.PlacePredictionModel;
-import com.example.go4lunch.ui.HomeViewModel;
 import com.example.go4lunch.ui.ViewModelFactory;
 import com.example.go4lunch.ui.place_details.PlaceDetailsActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -31,8 +30,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.Locale;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.List;
 
 public class MapViewFragment extends Fragment {
 
@@ -55,6 +53,7 @@ public class MapViewFragment extends Fragment {
 
     // MVVM - Object declaration
     private MapViewModel mMapViewModel;
+    private List<UserModel> mListOfWorkmates;
 
     // GOOGLE PLACES with API and MVVM - Instance the ViewModel object (mMapViewModel)
     // based on the Factory ViewModelFactory (ViewModelFactory.getInstance())
@@ -126,6 +125,9 @@ public class MapViewFragment extends Fragment {
     private void loadSearchViewData() {
         mMapViewModel.getSearchViewQuery().observe(getViewLifecycleOwner(), searchViewQueryViewState ->{
             mSearchViewQuery = searchViewQueryViewState;
+            mMapViewModel.getAllUsers().observe(getViewLifecycleOwner(), workmatesState -> {
+                mListOfWorkmates = workmatesState;
+            });
             displayView();
         });
     }
@@ -160,7 +162,7 @@ public class MapViewFragment extends Fragment {
                             place.getGeometryAttributeForPlace().getLocation().getLng());
 
                     /* We change the Marker's color if 1+ interested workmates counted */
-                    if (countWorkmatesForAPlace(place, null) > 0 ) {
+                    if (DoesWorkmateBookThisPlace(place, null)) {
                         Marker marker = mGoogleMap.addMarker(new MarkerOptions()
                                 .position(placeLocation)
                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
@@ -214,7 +216,7 @@ public class MapViewFragment extends Fragment {
                         LatLng placeLocation = new LatLng(placeDetailsViewState.getGeometry().getLocation().getLat(),
                                 placeDetailsViewState.getGeometry().getLocation().getLng());
 
-                        if (countWorkmatesForAPlace(null, placePrediction) > 0 ) {
+                        if (DoesWorkmateBookThisPlace(null, placePrediction)) {
                             Marker marker = mGoogleMap.addMarker(new MarkerOptions()
                                     .position(placeLocation)
                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
@@ -235,23 +237,22 @@ public class MapViewFragment extends Fragment {
         }
     }
 
-    private int countWorkmatesForAPlace(NearbyPlaceModel place, PlacePredictionModel placePrediction) {
-        AtomicInteger workmateCounter = new AtomicInteger();
-        mMapViewModel.getAllUsers().observe(getViewLifecycleOwner(), workmatesState -> {
-            /* We count the number of interested workmates for each loaded places */
-            for (UserModel workmate : workmatesState) {
-                if (place != null && placePrediction == null) {
-                    if (place.getPlaceId().equals(workmate.getPlaceId())) {
-                        workmateCounter.getAndIncrement();
-                    }
-                } else if (place == null && placePrediction != null) {
-                    if (placePrediction.getPlaceId().equals(workmate.getPlaceId())) {
-                        workmateCounter.getAndIncrement();
-                    }
-                }
+    private Boolean DoesWorkmateBookThisPlace(NearbyPlaceModel place, PlacePredictionModel placePrediction) {
+        String placeId = "";
+
+        if (place != null && placePrediction == null) {
+            placeId = place.getPlaceId();
+        } else if (place == null && placePrediction != null) {
+            placeId = placePrediction.getPlaceId();
+        }
+
+        /* We count the number of interested workmates for each loaded places */
+        for (UserModel workmate : mListOfWorkmates) {
+            if (placeId.equals(workmate.getPlaceId())) {
+                return true;
             }
-        });
-        return workmateCounter.get();
+        }
+        return false;
     }
 
     private void loadPlaceDetailsActivityOnMarkerClick(NearbyPlaceModel place, PlacePredictionModel placePrediction) {
