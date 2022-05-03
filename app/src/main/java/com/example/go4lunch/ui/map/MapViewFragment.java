@@ -125,9 +125,16 @@ public class MapViewFragment extends Fragment {
     private void loadSearchViewData() {
         mMapViewModel.getSearchViewQuery().observe(getViewLifecycleOwner(), searchViewQueryViewState ->{
             mSearchViewQuery = searchViewQueryViewState;
-            mMapViewModel.getAllUsers().observe(getViewLifecycleOwner(), workmatesState -> {
-                mListOfWorkmates = workmatesState;
-            });
+            if (mListOfWorkmates != null) {
+                displayView();
+            }
+        });
+        loadWorkmates();
+    }
+
+    private void loadWorkmates() {
+        mMapViewModel.getAllUsers().observe(getViewLifecycleOwner(), workmatesState -> {
+            mListOfWorkmates = workmatesState;
             displayView();
         });
     }
