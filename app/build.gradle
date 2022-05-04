@@ -49,15 +49,19 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     implementation 'androidx.navigation:navigation-fragment:2.4.1'
     implementation 'androidx.navigation:navigation-ui:2.4.1'
+    // Notifications
+    implementation 'androidx.core:core:1.6.0'
 
     // GLIDE
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
     /*
-        * EVENT BUS
+        * WORK MANAGER
      */
-    implementation 'org.greenrobot:eventbus:3.3.1'
+    def work_version = "2.7.1"
+    // (Java only)
+    implementation "androidx.work:work-runtime:$work_version"
 
     /*
         * ANDROID LIFECYCLE
