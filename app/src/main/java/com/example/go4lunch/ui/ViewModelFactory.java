@@ -58,6 +58,16 @@ public class ViewModelFactory implements ViewModelProvider.Factory{
     @Override
     @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> prototypeClass) {
+        if (prototypeClass.isAssignableFrom(MainViewModel.class)) {
+            // We inject the Repository in the ViewModel constructor
+            return (T) new MainViewModel(mUserDataSource);
+        }
+
+        if (prototypeClass.isAssignableFrom(HomeViewModel.class)) {
+            // We inject the Repository in the ViewModel constructor
+            return (T) new HomeViewModel(mPlaceDataSource, mUserDataSource);
+        }
+
         if (prototypeClass.isAssignableFrom(MapViewModel.class)) {
             // We inject the Repository in the ViewModel constructor
             return (T) new MapViewModel(mPlaceDataSource, mUserDataSource);
@@ -76,11 +86,6 @@ public class ViewModelFactory implements ViewModelProvider.Factory{
         if (prototypeClass.isAssignableFrom(WorkmatesViewModel.class)){
             // We inject the Repository in the ViewModel constructor
             return (T) new WorkmatesViewModel(mUserDataSource);
-        }
-
-        if (prototypeClass.isAssignableFrom(HomeViewModel.class)) {
-            // We inject the Repository in the ViewModel constructor
-            return (T) new HomeViewModel(mPlaceDataSource);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

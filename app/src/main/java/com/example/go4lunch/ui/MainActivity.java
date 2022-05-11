@@ -5,8 +5,8 @@ import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.example.go4lunch.Manager.UserManager;
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.ActivityMainBinding;
 import com.firebase.ui.auth.AuthMethodPickerLayout;
@@ -25,7 +25,8 @@ import java.util.List;
  */
 public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
-    private final UserManager userManager = UserManager.getInstance();
+    // MVVM - Object declaration
+    private MainViewModel mMainViewModel;
 
     /*
      * MainActivity VITAL SETUP
@@ -41,6 +42,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setupViewModel();
+
         startSignInActivity();
     }
 
@@ -101,9 +105,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         IdpResponse response = result.getIdpResponse();
         if (result.getResultCode() == RESULT_OK) {
             // Successfully signed in
-            userManager.createUser();
+            mMainViewModel.createUser();
                 // FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             showSnackBar(getString(R.string.connection_succeed));
+            finish();
             starthomeActivity();
 
         } else {
@@ -132,6 +137,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     private void starthomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
+    }
+
+    private void setupViewModel() {
+        mMainViewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MainViewModel.class);
     }
 
     // SIGN_IN_PROCESS_03--Show Snack Bar in mainLayout
