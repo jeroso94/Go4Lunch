@@ -82,7 +82,6 @@ public class UserRepository {
         if(user == null){
             String uid = user.getUid();
             String username = user.getDisplayName();
-            /* TODO: Réviser le code pour obtentir la photo (pas sûr que ce soit une url). Faut-il plutôt la charger depuis sampledata ?*/
             String urlPicture = (user.getPhotoUrl() != null) ? user.getPhotoUrl().toString() : null;
 
             UserModel userToCreate = new UserModel(uid, username, urlPicture, null, null, null, new ArrayList<>());

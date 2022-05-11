@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.go4lunch.Manager.UserManager;
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.FragmentWorkmatesBinding;
 import com.example.go4lunch.model.UserModel;
@@ -27,8 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WorkmatesFragment extends Fragment {
-
-    private UserManager mUserManager = UserManager.getInstance();
 
     private FragmentWorkmatesBinding mFragmentWorkmates;
 
