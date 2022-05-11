@@ -34,4 +34,7 @@
     <string name="website_label">URL</string>
     <string name="guest">Invité</string>
     <string name="workmate_choice">Choix</string>
+    <string name="alert_dialog_settings_title">Paramètres...</string>
+    <string name="alert_dialog_settings_cancel_button_label">Annuler</string>
+    <string name="alert_dialog_settings_save_button_label">Valider</string>
 </resources>
