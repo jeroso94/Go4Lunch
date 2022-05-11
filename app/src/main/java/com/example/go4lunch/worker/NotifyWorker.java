@@ -27,29 +27,6 @@ public class NotifyWorker extends Worker {
 
     public NotifyWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
-
-        //we set a tag to be able to cancel all work of this type if needed
-        final String WORK_TAG = "notificationWork";
-
-        /*OneTimeWorkRequest notificationWork = new OneTimeWorkRequest.Builder(NotifyWorker.class)
-                .setInitialDelay(calculateDelay(event.getDate()), TimeUnit.MILLISECONDS)
-                .addTag(WORK_TAG)
-                .build();
-
-        WorkManager.getInstance(context)
-                .enqueue(notificationWork);
-        // we can use this form to determine what happens to the existing stack
-        WorkManager.getInstance(context)
-                .beginUniqueWork(WORK_TAG, ExistingWorkPolicy.REPLACE, notificationWork);*/
-
-        PeriodicWorkRequest notificationWork =
-                new PeriodicWorkRequest.Builder(NotifyWorker.class, 15, TimeUnit.MINUTES)
-                .addTag(WORK_TAG)
-                .build();
-
-        WorkManager.getInstance(context).cancelAllWorkByTag(WORK_TAG);
-        WorkManager.getInstance(context)
-                .enqueue(notificationWork);
     }
 
     @NonNull

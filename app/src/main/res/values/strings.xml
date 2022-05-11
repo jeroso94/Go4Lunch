@@ -42,6 +42,11 @@
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
 
+    <!-- HOME ACTIVITY  -   NAVIGATION DRAWER MENU  -   SETTINGS ALERT DIALOG -->
+    <string name="alert_dialog_settings_title">Settings...</string>
+    <string name="alert_dialog_settings_cancel_button_label">Cancel</string>
+    <string name="alert_dialog_settings_save_button_label">Save</string>
+
     <!-- HOME ACTIVITY - SEARCH VIEW -->
     <string name="search_item">Search</string>
 
