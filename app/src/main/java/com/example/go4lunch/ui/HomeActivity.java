@@ -196,7 +196,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         placeDetailsIntent.putExtra("PLACE_ID", userDetailsViewState.getPlaceId());
                         startActivity(placeDetailsIntent);
                     } else {
-                        showToast("No lunch selected");
+                        showToast(getString(R.string.nav_drawer_item1_noresult));
                     }
                 });
                 break;

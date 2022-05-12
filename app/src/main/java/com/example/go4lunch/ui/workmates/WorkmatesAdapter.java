@@ -1,26 +1,18 @@
 package com.example.go4lunch.ui.workmates;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.R;
-import com.example.go4lunch.databinding.FragmentWorkmatesBinding;
-import com.example.go4lunch.databinding.PlaceAttributesBinding;
 import com.example.go4lunch.databinding.WorkmateAttributesBinding;
 import com.example.go4lunch.model.UserModel;
-import com.example.go4lunch.model.nearby_search.NearbyPlaceModel;
-import com.example.go4lunch.ui.ViewModelFactory;
-import com.example.go4lunch.ui.list.ListViewAdapter;
-import com.example.go4lunch.ui.place_details.PlaceDetailsViewModel;
 
 import java.util.List;
 
@@ -31,8 +23,10 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.Work
 
     @NonNull
     private final List<UserModel> mUsersList;
+    private Context mContext;
 
-    public WorkmatesAdapter(@NonNull List<UserModel> usersList) {
+    public WorkmatesAdapter(Context context, @NonNull List<UserModel> usersList) {
+        this.mContext = context;
         mUsersList = usersList;
     }
 
@@ -49,7 +43,7 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.Work
     public void onBindViewHolder(@NonNull WorkmatesAdapter.WorkmatesViewHolder holder, int position) {
         UserModel user = mUsersList.get(position);
 
-        /* TODO: Réviser le code pour obtentir la photo (pas sûr que ce soit une url). Faut-il plutôt la charger depuis sampledata ?*/
+
         if (user.getUrlPicture() != null) {
             Glide.with(holder.mWorkmateAttributesViewHolder.picture.getContext())
             .load(user.getUrlPicture())
@@ -60,9 +54,10 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.Work
         }
 
         if (user.getPlaceName() != null) {
-            holder.mWorkmateAttributesViewHolder.workmateChoice.setText(String.format("%s is eating at (%s)", user.getUsername(), user.getPlaceName()));
+            holder.mWorkmateAttributesViewHolder.workmateChoice.setText(String.format("%s %s (%s)", user.getUsername(), mContext.getResources().getString(R.string.workmate_choice_done), user.getPlaceName()));
         } else {
-            holder.mWorkmateAttributesViewHolder.workmateChoice.setText(String.format("%s hasn't decided yet", user.getUsername()));
+
+            holder.mWorkmateAttributesViewHolder.workmateChoice.setText(String.format("%s ", user.getUsername(), mContext.getResources().getResourceName(R.string.workmates_choice_todo)));
         }
     }
 

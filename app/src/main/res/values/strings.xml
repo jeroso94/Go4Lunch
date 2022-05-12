@@ -65,8 +65,17 @@
     <string name="call_label">CALL</string>
     <string name="like_label">LIKE</string>
     <string name="website_label">WEBSITE</string>
-    <string name="guest">Guest</string>
+    <string name="guest_registered">is joining!</string>
+    <string name="no_guest">Nobody has booked.</string>
 
     <!-- WORKMATES FRAGMENT  -->
     <string name="workmate_choice">Workmate choice</string>
+    <string name="workmates_choice_todo">hasn\'t decided yet</string>
+    <string name="workmate_choice_done">is eating at</string>
+    <string name="nav_drawer_item1_noresult">No lunch selected</string>
+
+    <!-- NOTIFICATION  -->
+    <string name="notification_title" translatable="false">Go4Lunch</string>
+    <string name="notification_default_text">No data to display</string>
+
 </resources>

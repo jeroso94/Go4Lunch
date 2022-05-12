@@ -63,7 +63,7 @@ public class WorkmatesFragment extends Fragment {
         mFragmentWorkmates = FragmentWorkmatesBinding.inflate(inflater, container, false);
         mRecyclerView = (RecyclerView) mFragmentWorkmates.listOfWorkmates;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL, false));
-        mWorkmatesAdapter = new WorkmatesAdapter(mUsersList);
+        mWorkmatesAdapter = new WorkmatesAdapter(getContext(), mUsersList);
         mRecyclerView.setAdapter(mWorkmatesAdapter);
 
         displayView();
