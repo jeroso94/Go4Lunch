@@ -89,20 +89,6 @@ public class PlaceDetailsActivity extends AppCompatActivity {
                         }
                     }
                 }
-
-                /* TODO: Extraire ce RecyclerView de l'observer "mPlaceDetailsView.loadUserDetails().observe()"
-                *   Remonter au niveau supérieur */
-                /** LAYOUT
-                 * - POPULATE ITEMS IN THE RECYCLERVIEW WIDGET
-                 */
-                mGuestsAdapter = new GuestsAdapter(mGuestsList, placeDetailsViewState);
-                mRecyclerView.setAdapter(mGuestsAdapter);
-
-                mPlaceDetailsView.loadUsers().observe(this, guestsViewStates -> {
-                    mGuestsList.clear();
-                    mGuestsList.addAll(guestsViewStates);
-                    mGuestsAdapter.notifyDataSetChanged();
-                });
             });
 
             /* CALL BUTTON INTERACTION */
@@ -145,6 +131,18 @@ public class PlaceDetailsActivity extends AppCompatActivity {
                     mPlaceDetailsView.bookAPlace(mPlaceId, placeDetailsViewState.getName(), placeDetailsViewState.getVicinity());
                     mActivityPlaceDetails.floatingActionButton.setImageResource(R.drawable.ic_baseline_check_circle);
                 }
+            });
+
+            /** LAYOUT
+             * - POPULATE ITEMS IN THE RECYCLERVIEW WIDGET
+             */
+            mGuestsAdapter = new GuestsAdapter(this, mGuestsList, placeDetailsViewState);
+            mRecyclerView.setAdapter(mGuestsAdapter);
+
+            mPlaceDetailsView.loadUsers().observe(this, guestsViewStates -> {
+                mGuestsList.clear();
+                mGuestsList.addAll(guestsViewStates);
+                mGuestsAdapter.notifyDataSetChanged();
             });
         });
     }
