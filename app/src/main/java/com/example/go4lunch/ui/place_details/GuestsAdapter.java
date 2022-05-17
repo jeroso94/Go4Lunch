@@ -26,13 +26,11 @@ import java.util.List;
 public class GuestsAdapter extends RecyclerView.Adapter<GuestsAdapter.GuestsViewHolder>{
 
     private final List<UserModel> mGuestsList;
-    private PlaceDetailsModel mPlaceDetails;
     private Context mContext;
 
-    public GuestsAdapter(Context context, List<UserModel> guestsList, PlaceDetailsModel placeDetails) {
+    public GuestsAdapter(Context context, List<UserModel> guestsList) {
         this.mContext = context;
         mGuestsList = guestsList;
-        mPlaceDetails = placeDetails;
     }
 
     @NonNull
@@ -48,21 +46,14 @@ public class GuestsAdapter extends RecyclerView.Adapter<GuestsAdapter.GuestsView
     public void onBindViewHolder(@NonNull GuestsAdapter.GuestsViewHolder holder, int position) {
         UserModel guest = mGuestsList.get(position);
 
-        if (mGuestsList.size() == 0){
-            holder.mGuestAttributesViewHolder.guest.setText(String.format("%s", mContext.getResources().getString(R.string.no_guest)));
-        } else {
-            if (guest.getPlaceId() != null && guest.getPlaceId().equals(mPlaceDetails.getPlaceId())) {
-                if (guest.getUrlPicture() != null) {
-                    Glide.with(holder.mGuestAttributesViewHolder.picture.getContext())
-                            .load(guest.getUrlPicture())
-                            .apply(RequestOptions.centerCropTransform())
-                            .into(holder.mGuestAttributesViewHolder.picture);
-                } else {
-                    holder.mGuestAttributesViewHolder.picture.setVisibility(View.GONE);
-                }
-
-                holder.mGuestAttributesViewHolder.guest.setText(String.format("%s %s", guest.getUsername(), mContext.getResources().getString(R.string.guest_registered)));
+        if (getItemCount() > 0) {
+            if (guest.getUrlPicture() != null) {
+                Glide.with(holder.mGuestAttributesViewHolder.picture.getContext())
+                        .load(guest.getUrlPicture())
+                        .apply(RequestOptions.centerCropTransform())
+                        .into(holder.mGuestAttributesViewHolder.picture);
             }
+            holder.mGuestAttributesViewHolder.guest.setText(String.format("%s %s", guest.getUsername(), mContext.getResources().getString(R.string.guest_registered)));
         }
     }
 
@@ -70,7 +61,6 @@ public class GuestsAdapter extends RecyclerView.Adapter<GuestsAdapter.GuestsView
     public int getItemCount() {
         return mGuestsList.size();
     }
-
 
     public class GuestsViewHolder extends RecyclerView.ViewHolder {
         private final GuestAttributesBinding mGuestAttributesViewHolder;

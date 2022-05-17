@@ -1,6 +1,7 @@
 package com.example.go4lunch.ui.place_details;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -136,13 +137,20 @@ public class PlaceDetailsActivity extends AppCompatActivity {
             /** LAYOUT
              * - POPULATE ITEMS IN THE RECYCLERVIEW WIDGET
              */
-            mGuestsAdapter = new GuestsAdapter(this, mGuestsList, placeDetailsViewState);
+            mGuestsAdapter = new GuestsAdapter(this, mGuestsList);
             mRecyclerView.setAdapter(mGuestsAdapter);
 
-            mPlaceDetailsView.loadUsers().observe(this, guestsViewStates -> {
-                mGuestsList.clear();
-                mGuestsList.addAll(guestsViewStates);
-                mGuestsAdapter.notifyDataSetChanged();
+            mPlaceDetailsView.loadUsers().observe(this, new Observer<List<UserModel>>() {
+                @Override
+                public void onChanged(List<UserModel> guestsViewStates) {
+                    mGuestsList.clear();
+                    for (UserModel guest : guestsViewStates) {
+                        if (guest.getPlaceId() != null && guest.getPlaceId().equals(placeDetailsViewState.getPlaceId())){
+                            mGuestsList.add(guest);
+                        }
+                    }
+                    mGuestsAdapter.notifyDataSetChanged();
+                }
             });
         });
     }
