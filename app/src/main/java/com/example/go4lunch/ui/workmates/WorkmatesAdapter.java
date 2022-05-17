@@ -43,14 +43,11 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.Work
     public void onBindViewHolder(@NonNull WorkmatesAdapter.WorkmatesViewHolder holder, int position) {
         UserModel user = mUsersList.get(position);
 
-
         if (user.getUrlPicture() != null) {
             Glide.with(holder.mWorkmateAttributesViewHolder.picture.getContext())
             .load(user.getUrlPicture())
             .apply(RequestOptions.centerCropTransform())
             .into(holder.mWorkmateAttributesViewHolder.picture);
-        } else {
-            holder.mWorkmateAttributesViewHolder.picture.setVisibility(View.GONE);
         }
 
         if (user.getPlaceName() != null) {
