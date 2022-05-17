@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -57,42 +58,84 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/signin_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toBottomOf="@id/linearLayout"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <Button
-            android:id="@+id/signin_button_facebook"
-            android:layout_width="272dp"
+        <LinearLayout
+            android:id="@+id/signin_block_1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/signin_facebook"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:text="@string/signin_button_facebook"
-            android:textAlignment="center"
-            android:textColor="#FFE0B2"
-            android:textSize="16sp"
-            app:icon="@drawable/com_facebook_button_icon" />
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/signin_block_2">
 
-        <Button
-            android:id="@+id/signin_button_google"
-            android:layout_width="272dp"
+            <Button
+                android:id="@+id/signin_button_google"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/signin_google"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="@string/signin_button_google"
+                android:textAlignment="center"
+                android:textColor="#445555"
+                android:textSize="12sp"
+                app:icon="@drawable/googleg_standard_color_18"
+                app:iconTintMode="multiply" />
+
+            <Button
+                android:id="@+id/signin_button_twitter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/signin_twitter"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="@string/signin_button_twitter"
+                android:textAlignment="center"
+                android:textColor="#FFEE"
+                android:textSize="12sp"
+                app:icon="@drawable/fui_ic_twitter_bird_white_24dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/signin_block_2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/signin_google"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:text="@string/signin_button_google"
-            android:textAlignment="center"
-            android:textColor="#FFF9C4"
-            android:textSize="16sp"
-            app:icon="@drawable/googleg_standard_color_18"
-            app:iconTintMode="multiply" />
-    </LinearLayout>
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintStart_toEndOf="@+id/signin_block_1"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <Button
+                android:id="@+id/signin_button_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/signin_email"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="@string/signin_button_email"
+                android:textAlignment="center"
+                android:textColor="#FFEE"
+                android:textSize="12sp"
+                app:icon="@drawable/ic_baseline_email" />
+
+            <Button
+                android:id="@+id/signin_button_facebook"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/signin_facebook"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="@string/signin_button_facebook"
+                android:textAlignment="center"
+                android:textColor="#FFEE"
+                android:textSize="12sp"
+                app:icon="@drawable/com_facebook_button_icon" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

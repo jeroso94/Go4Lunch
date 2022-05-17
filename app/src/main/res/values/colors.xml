@@ -8,8 +8,10 @@
     <color name="white">#FFFFFFFF</color>
 
     <!--COLORS FOR SIGN-IN LAYOUT-->
+    <color name="signin_email">#D32F2F</color>
     <color name="signin_facebook">#1565C0</color>
-    <color name="signin_google">#D32F2F</color>
+    <color name="signin_google">#FFFF</color>
+    <color name="signin_twitter">#1dcaff</color>
 
     <!--COMMON COLORS-->
     <!--COLORS FOR HOME ACTIVITY - NAVIGATION DRAWER MENU-->

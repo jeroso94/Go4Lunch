@@ -79,7 +79,7 @@ public class UserRepository {
     // Create User in Firestore
     public void createUser() {
         FirebaseUser user = readCurrentUser();
-        if(user == null){
+        if(user != null){
             String uid = user.getUid();
             String username = user.getDisplayName();
             String urlPicture = (user.getPhotoUrl() != null) ? user.getPhotoUrl().toString() : null;

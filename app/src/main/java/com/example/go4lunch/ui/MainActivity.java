@@ -59,8 +59,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         // Choose authentication providers
         List<AuthUI.IdpConfig> providers =
                 Arrays.asList(
-                    new AuthUI.IdpConfig.GoogleBuilder().build()
+                    new AuthUI.IdpConfig.EmailBuilder().build()
                     ,new AuthUI.IdpConfig.FacebookBuilder().build()
+                    ,new AuthUI.IdpConfig.GoogleBuilder().build()
+                    ,new AuthUI.IdpConfig.TwitterBuilder().build()
                 );
                 /*
                 new AuthUI.IdpConfig.GoogleBuilder().build()
@@ -79,8 +81,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         //Setup sign-in layout
         AuthMethodPickerLayout customLayout = new AuthMethodPickerLayout
                 .Builder(R.layout.signin)
-                .setGoogleButtonId(R.id.signin_button_google)
+                .setEmailButtonId(R.id.signin_button_email)
                 .setFacebookButtonId(R.id.signin_button_facebook)
+                .setGoogleButtonId(R.id.signin_button_google)
+                .setTwitterButtonId(R.id.signin_button_twitter)
                 .build();
 
         // Setup sign-in intent
@@ -103,10 +107,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     // SIGN_IN_PROCESS_02--Setup signInResult
     private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
         IdpResponse response = result.getIdpResponse();
-        if (result.getResultCode() == RESULT_OK) {
-            // Successfully signed in
-            mMainViewModel.createUser();
-                // FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (result.getResultCode() == RESULT_OK) { // Successfully signed in
+            if (response.isNewUser()) {
+                mMainViewModel.createUser();
+            }
             showSnackBar(getString(R.string.connection_succeed));
             finish();
             starthomeActivity();
