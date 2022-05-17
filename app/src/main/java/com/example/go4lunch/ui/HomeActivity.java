@@ -254,13 +254,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         WorkManager.getInstance(context)
                 .beginUniqueWork(WORK_TAG, ExistingWorkPolicy.REPLACE, notificationWork);*/
 
-        PeriodicWorkRequest notificationWork =
-                new PeriodicWorkRequest.Builder(NotifyWorker.class, 15, TimeUnit.MINUTES)
-                        .addTag(WORK_TAG)
-                        .build();
+        mHomeViewModel.loadUserDetails().observe(this, userDetailsViewState ->{
+            if (userDetailsViewState.getPlaceId() != null){
+                PeriodicWorkRequest notificationWork =
+                        new PeriodicWorkRequest.Builder(NotifyWorker.class, 15, TimeUnit.MINUTES)
+                                .addTag(WORK_TAG)
+                                .build();
 
-        WorkManager.getInstance(this).cancelAllWorkByTag(WORK_TAG);
-        WorkManager.getInstance(this).enqueue(notificationWork);
+                WorkManager.getInstance(this).cancelAllWorkByTag(WORK_TAG);
+                WorkManager.getInstance(this).enqueue(notificationWork);
+            } else {
+                showToast(getString(R.string.notification_enabled_without_placeId_stored));
+            }
+        });
+
     }
 
     private void showSettingsAlertDialog() {

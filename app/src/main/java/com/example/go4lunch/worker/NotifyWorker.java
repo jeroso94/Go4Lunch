@@ -81,13 +81,13 @@ public class NotifyWorker extends Worker {
         List<String> workmatesToLunchWith = new ArrayList<>();
 
         for (UserModel user:mUsersList){
-            if (user.getUid().equals(mCurrentUser.getUid())){
+            if (user.getUid().equals(mCurrentUser.getUid())) {
                 myResto[0] = user.getPlaceId();
                 myResto[1] = user.getPlaceName();
                 myResto[2] = user.getPlaceAddress();
             }
 
-            if (user.getPlaceId().equals(myResto[0])){
+            if (user.getPlaceId().equals(myResto[0])) {
                 workmatesToLunchWith.add(user.getUsername());
             }
         }
