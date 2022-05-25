@@ -1,0 +1,54 @@
+{
+    "html_attributions" : [],
+    "next_page_token" : "Aap_uECbB7hYHqc3uBH7OUCnAE7AuCnWlRnwzYMJtE2kUZQ9LtlEMD5FAqaoZn2_YbHXOwtMzBu9eakJRl0ECrqo984yAkFFkYF7d6JzPF_zlWXo9DIcLFLRIj8mJZ1n_NwlGLpMgIxAwek9rIIuE9QTOW0xqA2f5woVzPHNQ4p2-_D_WNgpgVmOXUEzwlPIYkjJVVcEaNyfKkExUbdLdtuYFUZWvMXhMLkm97rZuppyoQQZFXw2JHK_LhVWCuVmd8gdcAw4vYwf1UuVtq_LWPomQKsV8uRazImbpgwe8i-JqWsYD1YiurNiYLMS_pldPZfKw8zpeiM1P-JmiaENKMGMtm7qN1Iz9OvFl1Mn6rl71VScM0f2bYWHtV6NN5F3csPePXNJ8mF9c416iJXoPcTjZvrNiXupxDZ_inpB531wngKUnlmvtfPoNZpwHe79",
+    "results" : [
+        {
+            "business_status" : "OPERATIONAL",
+            "geometry" : {
+                "location" : {
+                    "lat" : 48.84620839999999,
+                    "lng" : 2.4163612
+                },
+                "viewport" : {
+                    "northeast" : {
+                        "lat" : 48.8476438302915,
+                        "lng" : 2.417731730291502
+                    },
+                    "southwest" : {
+                        "lat" : 48.8449458697085,
+                        "lng" : 2.415033769708498
+                    }
+                }
+            },
+            "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
+            "icon_background_color" : "#909CE1",
+            "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/hotel_pinlet",
+            "name" : "Le Ruisseau Hotel",
+            "opening_hours" : {
+                "open_now" : true
+            },
+            "photos" : [
+                {
+                    "height" : 4032,
+                    "html_attributions" : [
+                        "\u003ca href=\"https://maps.google.com/maps/contrib/114472861251775715623\"\u003eMaria de las Mercedes del Amo\u003c/a\u003e"
+                    ],
+                    "photo_reference" : "Aap_uEAiSE9uR0ElOu72_FeiU2jFgJctBPOMUBj83cssFqfX5VnJ1I61QErIZ1IDe23SkEZoC14dInTZlg1KOvaYUjGH-sIJBL-JaGnfAe8JkkuVFqLzURTUz_O2TGa0MdZR_oGSVrOudSiA0nVnqJrbtEpBymJSTDUgsS2MJZ6Q7zZFTIQ_",
+                    "width" : 3024
+                }
+            ],
+            "place_id" : "ChIJMSj7c4Zy5kcRzBLq5t5xask",
+            "plus_code" : {
+                "compound_code" : "RCW8+FG Saint-Mandé, France",
+                "global_code" : "8FW4RCW8+FG"
+            },
+            "rating" : 4.3,
+            "reference" : "ChIJMSj7c4Zy5kcRzBLq5t5xask",
+            "scope" : "GOOGLE",
+            "types" : [ "lodging", "restaurant", "point_of_interest", "food", "establishment" ],
+            "user_ratings_total" : 324,
+            "vicinity" : "137 Avenue Gallieni, Saint-Mandé"
+        }
+    ],
+    "status" : "OK"
+}

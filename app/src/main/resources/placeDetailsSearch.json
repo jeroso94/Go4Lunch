@@ -1,0 +1,323 @@
+{
+  "html_attributions": [],
+  "result": {
+    "address_components": [
+      {
+        "long_name": "137",
+        "short_name": "137",
+        "types": [
+          "street_number"
+        ]
+      },
+      {
+        "long_name": "Avenue Gallieni",
+        "short_name": "Av. Gallieni",
+        "types": [
+          "route"
+        ]
+      },
+      {
+        "long_name": "Saint-Mandé",
+        "short_name": "Saint-Mandé",
+        "types": [
+          "locality",
+          "political"
+        ]
+      },
+      {
+        "long_name": "Val-de-Marne",
+        "short_name": "Val-de-Marne",
+        "types": [
+          "administrative_area_level_2",
+          "political"
+        ]
+      },
+      {
+        "long_name": "Île-de-France",
+        "short_name": "IDF",
+        "types": [
+          "administrative_area_level_1",
+          "political"
+        ]
+      },
+      {
+        "long_name": "France",
+        "short_name": "FR",
+        "types": [
+          "country",
+          "political"
+        ]
+      },
+      {
+        "long_name": "94160",
+        "short_name": "94160",
+        "types": [
+          "postal_code"
+        ]
+      }
+    ],
+    "adr_address": "<span class=\"street-address\">137 Av. Gallieni</span>, <span class=\"postal-code\">94160</span> <span class=\"locality\">Saint-Mandé</span>, <span class=\"country-name\">France</span>",
+    "business_status": "OPERATIONAL",
+    "formatted_address": "137 Av. Gallieni, 94160 Saint-Mandé, France",
+    "formatted_phone_number": "01 43 74 02 39",
+    "geometry": {
+      "location": {
+        "lat": 48.84620839999999,
+        "lng": 2.4163612
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 48.8476438302915,
+          "lng": 2.417731730291502
+        },
+        "southwest": {
+          "lat": 48.8449458697085,
+          "lng": 2.415033769708498
+        }
+      }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
+    "icon_background_color": "#909CE1",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/hotel_pinlet",
+    "international_phone_number": "+33 1 43 74 02 39",
+    "name": "Le Ruisseau Hotel",
+    "opening_hours": {
+      "open_now": false,
+      "periods": [
+        {
+          "close": {
+            "day": 0,
+            "time": "1500"
+          },
+          "open": {
+            "day": 0,
+            "time": "1200"
+          }
+        },
+        {
+          "close": {
+            "day": 1,
+            "time": "2230"
+          },
+          "open": {
+            "day": 1,
+            "time": "1200"
+          }
+        },
+        {
+          "close": {
+            "day": 2,
+            "time": "2230"
+          },
+          "open": {
+            "day": 2,
+            "time": "1200"
+          }
+        },
+        {
+          "close": {
+            "day": 3,
+            "time": "2230"
+          },
+          "open": {
+            "day": 3,
+            "time": "1200"
+          }
+        },
+        {
+          "close": {
+            "day": 4,
+            "time": "2230"
+          },
+          "open": {
+            "day": 4,
+            "time": "1200"
+          }
+        },
+        {
+          "close": {
+            "day": 5,
+            "time": "2230"
+          },
+          "open": {
+            "day": 5,
+            "time": "1200"
+          }
+        },
+        {
+          "close": {
+            "day": 6,
+            "time": "2230"
+          },
+          "open": {
+            "day": 6,
+            "time": "1900"
+          }
+        }
+      ],
+      "weekday_text": [
+        "Monday: 12:00 – 10:30 PM",
+        "Tuesday: 12:00 – 10:30 PM",
+        "Wednesday: 12:00 – 10:30 PM",
+        "Thursday: 12:00 – 10:30 PM",
+        "Friday: 12:00 – 10:30 PM",
+        "Saturday: 7:00 – 10:30 PM",
+        "Sunday: 12:00 – 3:00 PM"
+      ]
+    },
+    "photos": [
+      {
+        "height": 4032,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/114472861251775715623\">Maria de las Mercedes del Amo</a>"
+        ],
+        "photo_reference": "Aap_uEBiwu8suWM7rhuc8LxuK_dWedJLiEPvbAMFPgpzI4h2DbQWWnLcfm7FYnRTSdL41mfyaGMwr4kKy9Y_V5I21DzwOMXQg17-EHE6OQA_ttxXa4w3GuKS1xPP2cvo92M0Es7vjC_wEbPdZO8EV2oXmujciHw5FHo1XB1nf7BqDRkynhTq",
+        "width": 3024
+      },
+      {
+        "height": 2988,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/117675263916569789884\">Jean-Claude JAILLET</a>"
+        ],
+        "photo_reference": "Aap_uEBYrybbur6NYMDEnRoEGxdE76iFcVjEVrhRuuUsuYk8RXYWXzYW_8jh4w0ITQf9zpwAhCluBhZFVl6RDjpMW519ceY5lnlDYnb4pnCnCFflMkdVW0NZaEZ-TXCkDBaSl7vChaNUi0lkadTXgXvpD_FYTOiy3x2COHcov1dj_xLkvlDg",
+        "width": 5312
+      },
+      {
+        "height": 3456,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/114860673434989086078\">Jean-Michel GAIFFE</a>"
+        ],
+        "photo_reference": "Aap_uEDXJXhWk7CmeeCrAZkX5F-4yVffNJwiaaN2VAL0Lq4PaV5Q2oZ0qFlQaeMf30ANHDMuP3s1JYLv7T0ju_QqOSinml6-FemUbYJH8PLyKen_7_RwfchO9sVym92MvXJ1feCEK1vGqj9vNpqauSHup_K8Ije4Q1dK-dOGkzYarWWrqnwY",
+        "width": 4608
+      },
+      {
+        "height": 3264,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/115001099098831056986\">Pascal SOULAGNET</a>"
+        ],
+        "photo_reference": "Aap_uEBiCLfMKYa0JAXa6KqWPXlDSPPS2fXOUh-pjgae0Z5mCfje9pcotU2O0WmYziViCl2jZ1GofrBOZQcvf9sj-2v5SH1L9BHFWQshHU4pDUxGrNP-hkSHjdLbByJckV_rLRWA_K1SSAWziQuKcI5qVE39o6ngneiyXHZSD_DpBop6_7dV",
+        "width": 4928
+      },
+      {
+        "height": 3060,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/115001099098831056986\">Pascal SOULAGNET</a>"
+        ],
+        "photo_reference": "Aap_uEDXT_3rdoJlzDRKTygGAdRWS5YptTgfyABThtlLlXPw16LM0IOS5A7In_x_mUjq_6FPtKdOtv500ASE4yJcab_cRjkX2vfmV9e6BlEVBGBqaqGqKz3WPBaEBpI14atM8iUnUc8fZlxJbXDMdZfEPS5-4aNmOyPE_mmlLoN6WxZI6uDD",
+        "width": 4620
+      },
+      {
+        "height": 2976,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/113847094547415623463\">Mael Coutand</a>"
+        ],
+        "photo_reference": "Aap_uEAueM94oE-DWCZ7O0VTYWoqVXCHp4S1lXfYh3V5XGHTQjhrQA46XTTiwN8y9JtxC1EPwrfjCsKL557-xV-gIsDY5IkY-b-9MF1AlusYuor2iojobvE-KdXtovfo-q11vNQzn3AIaplK2YMrdvXMzcaubdUlpm2ETUsAvZmh-PD1DtVX",
+        "width": 3968
+      },
+      {
+        "height": 2046,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/108626365174860592657\">yves pereira</a>"
+        ],
+        "photo_reference": "Aap_uED1HMSL96IOARjGQqRhmFVvmvzomRup_DVKZwUpzH3tj_qjHKPy035ePnecbDeks_D6cyAG2ANsEkJcZ91UEpzPgZRXGK29QIVW1DPKZtVLVvR9pRqr_7q7s9AyDiwBnTOSdYHOz7N-6TkWuuHF3pRhX-vOwE7lmtbfKM0h5g5RkHB8",
+        "width": 1080
+      },
+      {
+        "height": 3968,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/113847094547415623463\">Mael Coutand</a>"
+        ],
+        "photo_reference": "Aap_uECJS1MZw57TtbBgMGBZr1w4iWz_ZHw7LEPTSKpTd11GEu_CtG_Ld0ByPtDDaueII0bqdcXshW_hXeZkUVmGT7KPA-g2fpKHzcT0RmUmAtli55D1ktPWhHL856Lx4pdBEfiS8Ycd18zQ4fRQzBaLyjFDLC9h57Xvm1iPt0jbwRmFg0Zr",
+        "width": 2976
+      },
+      {
+        "height": 4032,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/103392710398750466073\">Christian Petitjean</a>"
+        ],
+        "photo_reference": "Aap_uEDgI49kPZSDmn4BxAVieHuRw-su9lNShPReCQrv3UaU2iiOIQ9ul5a1NoH9WWVf1XbMt5MzUdqEa2JZb6g8IVMpoou8N8WBVcaNfXV8Y4PmEckN7bGSOjB1iqeT6YaepQuGPwk536YMF_5HQpR3EPDeQPjibX4RMBqrLHS1zLPP8bQ",
+        "width": 3024
+      },
+      {
+        "height": 4032,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/103392710398750466073\">Christian Petitjean</a>"
+        ],
+        "photo_reference": "Aap_uEAkn2WhyYORlvQz9G-nAQcFby_pTsbbCDFv-Q0FGcY6DNAYnjqegr91Pwmg9vm3JiMomgiPFbNAB2JPG6hjGhGRK1WQRtR-_Q_099RdFMVdQhbMl229AsLLKk57yK7HCbNpR6Hu0GNVjW6qDjiw3CdPhtNbdZ5RkYEtJyR0ybO7UX8",
+        "width": 3024
+      }
+    ],
+    "place_id": "ChIJMSj7c4Zy5kcRzBLq5t5xask",
+    "plus_code": {
+      "compound_code": "RCW8+FG Saint-Mandé, France",
+      "global_code": "8FW4RCW8+FG"
+    },
+    "rating": 4.3,
+    "reference": "ChIJMSj7c4Zy5kcRzBLq5t5xask",
+    "reviews": [
+      {
+        "author_name": "akhil parameswaran",
+        "author_url": "https://www.google.com/maps/contrib/100178168749098035724/reviews",
+        "language": "en",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a-/AOh14GiNZph9tISs9Fl0FEOlJcPkM2yUJeZ2vmMcmCYfBw=s128-c0x00000000-cc-rp-mo-ba3",
+        "rating": 3,
+        "relative_time_description": "2 years ago",
+        "text": "Just ok. but the location is good. Old hotel with basic amenities",
+        "time": 1572281618
+      },
+      {
+        "author_name": "jullian sevestre",
+        "author_url": "https://www.google.com/maps/contrib/103054678249933893650/reviews",
+        "language": "en",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a-/AOh14GiwipkUxsvLe3Yb_RP2aSXoM1XUU77TQUz_rJ7uyg=s128-c0x00000000-cc-rp-mo-ba2",
+        "rating": 5,
+        "relative_time_description": "a year ago",
+        "text": "Top",
+        "time": 1593376347
+      },
+      {
+        "author_name": "Stephen Wootton",
+        "author_url": "https://www.google.com/maps/contrib/108368787352372205074/reviews",
+        "language": "en",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a-/AOh14GhwRWfcJVFpASd38kCY_QEw4Br7l2_JWI7GMmRG=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "6 years ago",
+        "text": "Nice small hotel, very close to the metro, small but clean rooms with friendly staff. Nice restaurant at the hotel and down the road. A wonderful market happens a couple of times a week just outside the hotel on the street. Highly recommend if you are looking for a great value hotel in Paris on the metro.",
+        "time": 1441718006
+      },
+      {
+        "author_name": "Clémence Claire",
+        "author_url": "https://www.google.com/maps/contrib/105234122715449208524/reviews",
+        "language": "en",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a-/AOh14GiYzSFkorz-HsJHExrr2eZsuaa7PUs9Y5afmpyXgw=s128-c0x00000000-cc-rp-mo",
+        "rating": 2,
+        "relative_time_description": "3 years ago",
+        "text": "I do not recommend. Count 98 euros per night for a tiny room, third floor without elevator, no USB socket, no internet connection (does not work).  Cleanliness more than limit, I found a dirty string under the bed (room 301) and old goblets. A light bulb in the bathroom was burned.",
+        "time": 1530014444
+      },
+      {
+        "author_name": "A. C.",
+        "author_url": "https://www.google.com/maps/contrib/116399234197309530137/reviews",
+        "language": "en",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a/AATXAJxOFafC10FeHsgRBPuJXnQLgakgM5UYxoknHnQO=s128-c0x00000000-cc-rp-mo-ba4",
+        "rating": 5,
+        "relative_time_description": "4 years ago",
+        "text": "Good meal ! Hotel beautiful !",
+        "time": 1498402864
+      }
+    ],
+    "types": [
+      "lodging",
+      "restaurant",
+      "food",
+      "point_of_interest",
+      "establishment"
+    ],
+    "url": "https://maps.google.com/?cid=14513537951325622988",
+    "user_ratings_total": 324,
+    "utc_offset": 120,
+    "vicinity": "137 Avenue Gallieni, Saint-Mandé",
+    "website": "http://www.leruisseau.fr/"
+  },
+  "status": "OK"
+}

@@ -1,7 +1,10 @@
 package com.example.go4lunch.data.di;
 
+import androidx.annotation.VisibleForTesting;
+
 import com.example.go4lunch.data.apiservice.PlaceService;
 
+import okhttp3.HttpUrl;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -13,12 +16,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class GoogleRetrofitModule {
     private static final String BASE_URL = "https://maps.googleapis.com";
-    private static final Retrofit mGoogleAPI = new Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
 
     public static PlaceService openRequestChannel() {
-        return mGoogleAPI.create(PlaceService.class);
+        return openRequestChannel(HttpUrl.get(BASE_URL));
+    }
+
+    @VisibleForTesting
+    public static PlaceService openRequestChannel(HttpUrl baseUrl) {
+        return new Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(PlaceService.class);
     }
 }
