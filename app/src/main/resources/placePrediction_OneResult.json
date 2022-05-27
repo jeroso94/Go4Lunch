@@ -1,0 +1,51 @@
+{
+  "predictions": [
+    {
+      "description": "Le Ruisseau Hotel, Avenue Gallieni, Saint-Mandé, France",
+      "matched_substrings": [
+        {
+          "length": 11,
+          "offset": 0
+        }
+      ],
+      "place_id": "ChIJMSj7c4Zy5kcRzBLq5t5xask",
+      "reference": "ChIJMSj7c4Zy5kcRzBLq5t5xask",
+      "structured_formatting": {
+        "main_text": "Le Ruisseau Hotel",
+        "main_text_matched_substrings": [
+          {
+            "length": 11,
+            "offset": 0
+          }
+        ],
+        "secondary_text": "Avenue Gallieni, Saint-Mandé, France"
+      },
+      "terms": [
+        {
+          "offset": 0,
+          "value": "Le Ruisseau Hotel"
+        },
+        {
+          "offset": 19,
+          "value": "Avenue Gallieni"
+        },
+        {
+          "offset": 36,
+          "value": "Saint-Mandé"
+        },
+        {
+          "offset": 49,
+          "value": "France"
+        }
+      ],
+      "types": [
+        "lodging",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ]
+    }
+  ],
+  "status": "OK"
+}
