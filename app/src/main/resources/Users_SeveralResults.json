@@ -1,0 +1,26 @@
+{
+  "Lyw6CiRp78h4utfPEi8HWE9q1ct2": {
+      "likesList": [],
+      "placeAddress": "54 Avenue de Paris, Vincennes",
+      "placeId": "ChIJWSUSFphy5kcRaddLnbqcDkQ",
+      "placeName": "La Maison Napolitaine",
+      "uid": "Lyw6CiRp78h4utfPEi8HWE9q1ct2",
+      "urlPicture": null,
+      "username": "Woody",
+      "__collections__": {}
+    },
+  "XDrbAVtLnlhSxc5mXgUmyGjgboH2": {
+      "likesList": [
+        "ChIJWSUSFphy5kcRaddLnbqcDkQ",
+        "ChIJO_5twaJy5kcRRLFclQRMT6k",
+        "ChIJ7Z7ZKpZy5kcRvc0ziZn3GKs"
+      ],
+      "placeAddress": "4 Rue Robert Giraudineau, Vincennes",
+      "placeId": "ChIJO_5twaJy5kcRRLFclQRMT6k",
+      "placeName": "K'Soya",
+      "uid": "XDrbAVtLnlhSxc5mXgUmyGjgboH2",
+      "urlPicture": "https://lh3.googleusercontent.com/a-/AOh14GhYOvoAd3xvDyYa4yR4XPwROG1rZlgnO8eLmbA=s96-c",
+      "username": "jerome 94",
+      "__collections__": {}
+    }
+}
