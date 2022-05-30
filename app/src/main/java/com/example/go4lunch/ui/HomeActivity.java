@@ -23,8 +23,13 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.R;
 import com.example.go4lunch.model.all_searches.geometry.location.LocationModel;
 import com.example.go4lunch.ui.list.ListViewFragment;
@@ -63,6 +68,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     final String[] SETTINGS_ITEM_LIST = new String[]{"Notification"};
 
     private DrawerLayout mDrawerLayout;
+    private NavigationView mNavigationView;
     private MapViewFragment mapViewFragment;
 
     final boolean[] mCheckedItems = new boolean[SETTINGS_ITEM_LIST.length];
@@ -103,8 +109,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         // NAVIGATION DRAWER - Setup NavigationView
-        NavigationView navigationView = findViewById(R.id.home_nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView = findViewById(R.id.home_nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
+        setProfileDataForNavigationDrawer();
 
         // BOTTOM NAVIGATION VIEW - Setup BottomNavigationView
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -170,6 +177,24 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             return false;
         }
     };
+
+    // NAVIGATION DRAWER - Setup Profile data to show
+    private void setProfileDataForNavigationDrawer() {
+            View mHeaderView = mNavigationView.getHeaderView(0);
+            ImageView avatar = mHeaderView.findViewById(R.id.nav_header_profile_avatar);
+            TextView profileName = mHeaderView.findViewById(R.id.nav_header_profile_name);
+
+            mHomeViewModel.loadUserDetails().observe(this, userDetailsViewState -> {
+
+                if (userDetailsViewState.getUrlPicture() != null) {
+                    Glide.with(this)
+                            .load(userDetailsViewState.getUrlPicture())
+                            .apply(RequestOptions.centerCropTransform())
+                            .into(avatar);
+                }
+                profileName.setText(userDetailsViewState.getUsername());
+            });
+    }
 
     // NAVIGATION DRAWER - When an item is selected
     @SuppressLint("NonConstantResourceId")
