@@ -1,11 +1,11 @@
 package com.example.go4lunch.ui.place_details;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,9 +40,9 @@ public class PlaceDetailsActivity extends AppCompatActivity {
         mPlaceId = placeDetailsIntent.getStringExtra("PLACE_ID");
 
         /* SETUP PLACE DETAILS VIEW OBJECT */
-        mPlaceDetailsView = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(PlaceDetailsViewModel.class);;
+        mPlaceDetailsView = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(PlaceDetailsViewModel.class);
 
-        /** LAYOUT
+        /* LAYOUT
          * - SETUP BINDING VIEW OBJECTS FROM LAYOUT TO ACTIVITY
         */
         mActivityPlaceDetails = ActivityPlaceDetailsBinding.inflate(getLayoutInflater());
@@ -51,8 +51,9 @@ public class PlaceDetailsActivity extends AppCompatActivity {
         displayView();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void displayView() {
-        /** LAYOUT - OVERRIDE THE RECYCLERVIEW WIDGET */
+        /* LAYOUT - OVERRIDE THE RECYCLERVIEW WIDGET */
         mRecyclerView = (RecyclerView) mActivityPlaceDetails.listOfGuests;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false));
 
@@ -93,64 +94,49 @@ public class PlaceDetailsActivity extends AppCompatActivity {
             });
 
             /* CALL BUTTON INTERACTION */
-            mActivityPlaceDetails.callButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (placeDetailsViewState.getInternationalPhoneNumber() != null) {
-                        Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                        callIntent.setData(Uri.parse("tel:" + placeDetailsViewState.getInternationalPhoneNumber()));
-                        startActivity(callIntent);
-                    }
+            mActivityPlaceDetails.callButton.setOnClickListener(view -> {
+                if (placeDetailsViewState.getInternationalPhoneNumber() != null) {
+                    Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                    callIntent.setData(Uri.parse("tel:" + placeDetailsViewState.getInternationalPhoneNumber()));
+                    startActivity(callIntent);
                 }
             });
 
             /* LIKE BUTTON INTERACTION */
-            mActivityPlaceDetails.likeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mPlaceDetailsView.likeAPlace(placeDetailsViewState.getPlaceId());
-                    mActivityPlaceDetails.likeButton.setImageResource(R.drawable.ic_baseline_star);
-                }
+            mActivityPlaceDetails.likeButton.setOnClickListener(view -> {
+                mPlaceDetailsView.likeAPlace(placeDetailsViewState.getPlaceId());
+                mActivityPlaceDetails.likeButton.setImageResource(R.drawable.ic_baseline_star);
             });
 
             /* WEBSITE BUTTON INTERACTION */
-            mActivityPlaceDetails.websiteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (placeDetailsViewState.getWebsite() != null) {
-                        Intent websiteIntent = new Intent(Intent.ACTION_VIEW);
-                        websiteIntent.setData(Uri.parse(placeDetailsViewState.getWebsite()));
-                        startActivity(websiteIntent);
-                    }
+            mActivityPlaceDetails.websiteButton.setOnClickListener(view -> {
+                if (placeDetailsViewState.getWebsite() != null) {
+                    Intent websiteIntent = new Intent(Intent.ACTION_VIEW);
+                    websiteIntent.setData(Uri.parse(placeDetailsViewState.getWebsite()));
+                    startActivity(websiteIntent);
                 }
             });
 
             /* CHOICE FAB INTERACTION */
-            mActivityPlaceDetails.floatingActionButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mPlaceDetailsView.bookAPlace(mPlaceId, placeDetailsViewState.getName(), placeDetailsViewState.getVicinity());
-                    mActivityPlaceDetails.floatingActionButton.setImageResource(R.drawable.ic_baseline_check_circle);
-                }
+            mActivityPlaceDetails.floatingActionButton.setOnClickListener(view -> {
+                mPlaceDetailsView.bookAPlace(mPlaceId, placeDetailsViewState.getName(), placeDetailsViewState.getVicinity());
+                mActivityPlaceDetails.floatingActionButton.setImageResource(R.drawable.ic_baseline_check_circle);
             });
 
-            /** LAYOUT
+            /* LAYOUT
              * - POPULATE ITEMS IN THE RECYCLERVIEW WIDGET
              */
             mGuestsAdapter = new GuestsAdapter(this, mGuestsList);
             mRecyclerView.setAdapter(mGuestsAdapter);
 
-            mPlaceDetailsView.loadUsers().observe(this, new Observer<List<UserModel>>() {
-                @Override
-                public void onChanged(List<UserModel> guestsViewStates) {
-                    mGuestsList.clear();
-                    for (UserModel guest : guestsViewStates) {
-                        if (guest.getPlaceId() != null && guest.getPlaceId().equals(placeDetailsViewState.getPlaceId())){
-                            mGuestsList.add(guest);
-                        }
+            mPlaceDetailsView.loadUsers().observe(this, guestsViewStates -> {
+                mGuestsList.clear();
+                for (UserModel guest : guestsViewStates) {
+                    if (guest.getPlaceId() != null && guest.getPlaceId().equals(placeDetailsViewState.getPlaceId())){
+                        mGuestsList.add(guest);
                     }
-                    mGuestsAdapter.notifyDataSetChanged();
                 }
+                mGuestsAdapter.notifyDataSetChanged();
             });
         });
     }

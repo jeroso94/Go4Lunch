@@ -2,7 +2,6 @@ package com.example.go4lunch.ui.workmates;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -23,7 +22,7 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.Work
 
     @NonNull
     private final List<UserModel> mUsersList;
-    private Context mContext;
+    private final Context mContext;
 
     public WorkmatesAdapter(Context context, @NonNull List<UserModel> usersList) {
         this.mContext = context;
@@ -53,8 +52,7 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.Work
         if (user.getPlaceName() != null) {
             holder.mWorkmateAttributesViewHolder.workmateChoice.setText(String.format("%s %s (%s)", user.getUsername(), mContext.getResources().getString(R.string.workmate_choice_done), user.getPlaceName()));
         } else {
-
-            holder.mWorkmateAttributesViewHolder.workmateChoice.setText(String.format("%s ", user.getUsername(), mContext.getResources().getResourceName(R.string.workmates_choice_todo)));
+            holder.mWorkmateAttributesViewHolder.workmateChoice.setText(String.format("%s %s", user.getUsername(), mContext.getResources().getResourceName(R.string.workmates_choice_todo)));
         }
     }
 

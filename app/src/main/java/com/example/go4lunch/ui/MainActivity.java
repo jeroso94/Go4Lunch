@@ -64,19 +64,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                     ,new AuthUI.IdpConfig.GoogleBuilder().build()
                     ,new AuthUI.IdpConfig.TwitterBuilder().build()
                 );
-                /*
-                new AuthUI.IdpConfig.GoogleBuilder().build()
-                ,new AuthUI.IdpConfig.FacebookBuilder().build()
-                ,new AuthUI.IdpConfig.EmailBuilder().build()
-                ,new AuthUI.IdpConfig.TwitterBuilder().build()
-                ,new AuthUI.IdpConfig.PhoneBuilder().build()
-                );
-                */
-
-        /* TEST - Single authentification
-        List<AuthUI.IdpConfig> providers =
-                Collections.singletonList(new AuthUI.IdpConfig.GoogleBuilder().build());
-        */
 
         //Setup sign-in layout
         AuthMethodPickerLayout customLayout = new AuthMethodPickerLayout
@@ -101,13 +88,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     // SIGN_IN_PROCESS_01--Setup signInLauncher
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
-            result -> onSignInResult(result)
+            this::onSignInResult
     );
 
     // SIGN_IN_PROCESS_02--Setup signInResult
     private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
         IdpResponse response = result.getIdpResponse();
         if (result.getResultCode() == RESULT_OK) { // Successfully signed in
+            assert response != null;
             if (response.isNewUser()) {
                 mMainViewModel.createUser();
             }

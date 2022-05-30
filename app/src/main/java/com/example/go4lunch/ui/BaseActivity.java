@@ -36,23 +36,4 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
         View view = binding.getRoot();
         setContentView(view);
     }
-
-    /* TODO : Refactor les appels DataBinding dans chaque activity par le code suivant
-       @Override
-       public ActivityProfileBinding getViewBinding(){
-       return ActivityProfileBinding.inflate(getLayoutInflater());
-       }
-
-      ET supprimer cet équivalent
-
-      mActivityPlaceDetails = ActivityPlaceDetailsBinding.inflate(getLayoutInflater());
-      setContentView(mActivityPlaceDetails.getRoot());
-
-      TODO: Envisager la possibilité de coder une classe équivalente pour
-       * les appels DataBinding dans chaque fragment
-       * les appels ViewModel
-       * les appels RecyclerView
-       * les appels FusedLocationProviderClient
-    */
-
 }

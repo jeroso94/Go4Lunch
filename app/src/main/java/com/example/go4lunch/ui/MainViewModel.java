@@ -2,7 +2,6 @@ package com.example.go4lunch.ui;
 
 import androidx.lifecycle.ViewModel;
 
-import com.example.go4lunch.data.repository.PlaceRepository;
 import com.example.go4lunch.data.repository.UserRepository;
 
 /**

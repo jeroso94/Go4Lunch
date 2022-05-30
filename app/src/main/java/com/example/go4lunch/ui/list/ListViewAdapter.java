@@ -3,7 +3,6 @@ package com.example.go4lunch.ui.list;
 import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewDebug;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -69,7 +68,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ListVi
         double placeLongitude = place.getGeometryAttributeForPlace().getLocation().getLng();
         float[] result = new float[1];
         Location.distanceBetween(mDeviceLatitude, mDeviceLongitude, placeLatitude, placeLongitude, result);
-        holder.mPlaceAttributes.distance.setText(String.format("%s%s", String.valueOf((int) result[0]), "m"));
+        holder.mPlaceAttributes.distance.setText(String.format("%s%s", (int) result[0], "m"));
 
         /* Interested Workmates */
         int workmateCounter = 0;

@@ -2,7 +2,6 @@ package com.example.go4lunch.ui.place_details;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -12,12 +11,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.GuestAttributesBinding;
-import com.example.go4lunch.databinding.WorkmateAttributesBinding;
 import com.example.go4lunch.model.UserModel;
-import com.example.go4lunch.model.place_details_search.PlaceDetailsModel;
-import com.example.go4lunch.ui.workmates.WorkmatesAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,7 +21,7 @@ import java.util.List;
 public class GuestsAdapter extends RecyclerView.Adapter<GuestsAdapter.GuestsViewHolder>{
 
     private final List<UserModel> mGuestsList;
-    private Context mContext;
+    private final Context mContext;
 
     public GuestsAdapter(Context context, List<UserModel> guestsList) {
         this.mContext = context;
@@ -39,7 +34,7 @@ public class GuestsAdapter extends RecyclerView.Adapter<GuestsAdapter.GuestsView
         // CREATE VIEW HOLDER AND INFLATING ITS XML LAYOUT
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         GuestAttributesBinding guestAttributes  = GuestAttributesBinding.inflate(inflater, parent, false);
-        return new GuestsAdapter.GuestsViewHolder(guestAttributes);
+        return new GuestsViewHolder(guestAttributes);
     }
 
     @Override
@@ -62,7 +57,7 @@ public class GuestsAdapter extends RecyclerView.Adapter<GuestsAdapter.GuestsView
         return mGuestsList.size();
     }
 
-    public class GuestsViewHolder extends RecyclerView.ViewHolder {
+    public static class GuestsViewHolder extends RecyclerView.ViewHolder {
         private final GuestAttributesBinding mGuestAttributesViewHolder;
         public GuestsViewHolder(@NonNull GuestAttributesBinding guestAttributesViewHolder) {
             super(guestAttributesViewHolder.getRoot());

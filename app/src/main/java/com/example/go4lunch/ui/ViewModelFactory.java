@@ -17,13 +17,6 @@ import javax.inject.Singleton;
 
 /**
  * Created by JeroSo94 on 04/03/2022.
- *
- * HomeActivity     -->   MapViewModel   --> PlaceRepository --> PlaceService
- *       View       -->     ViewModel    -->    Repository   --> Datasource (here, a Retrofit Api)
- *                              ↑
- *                    Injection starts here,
- *                    in the ViewModel layer
- *
  */
 
 @Singleton

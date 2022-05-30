@@ -69,6 +69,7 @@
     <string name="website_label">WEBSITE</string>
     <string name="guest_registered">is joining!</string>
     <string name="no_guest">Nobody has booked.</string>
+    <string name="the_workmate_empty_avatar">The workmate empty avatar</string>
 
     <!-- WORKMATES FRAGMENT  -->
     <string name="workmate_choice">Workmate choice</string>

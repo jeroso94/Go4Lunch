@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,11 +25,9 @@ import com.example.go4lunch.model.UserModel;
 import com.example.go4lunch.model.nearby_search.NearbyPlaceModel;
 import com.example.go4lunch.ui.ViewModelFactory;
 import com.example.go4lunch.ui.place_details.PlaceDetailsActivity;
-import com.example.go4lunch.ui.workmates.WorkmatesViewModel;
 import com.example.go4lunch.utils.ItemClickSupport;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
@@ -40,7 +37,7 @@ public class ListViewFragment extends Fragment {
 
     private FragmentListViewBinding mFragmentListView;
 
-    /** GEOLOCATION
+    /* GEOLOCATION
      * Location Services object which store the GPS&Network location
      */
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -60,13 +57,7 @@ public class ListViewFragment extends Fragment {
     /** MVVM - Object declaration **/
     private ListViewModel mListViewModel;
 
-    /** The RecyclerView which displays the list of places
-     * Suppress warning is safe because variable is initialized in onCreate
-     */
-    @NonNull
-    private RecyclerView mRecyclerView;
-
-    /** GOOGLE PLACES with API and MVVM - Instance the ViewModel object (mMapViewModel)
+    /* GOOGLE PLACES with API and MVVM - Instance the ViewModel object (mMapViewModel)
      * based on the Factory ViewModelFactory (ViewModelFactory.getInstance())
      */
     private void setupViewModel() {
@@ -82,14 +73,12 @@ public class ListViewFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /** GEOLOCATION
+        /* GEOLOCATION
          * - Construct a FusedLocationProviderClient object.
          */
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
 
-        /** GEOLOCATION & PLACES
-         * - GRANT LOCATION PERMISSION
-         */
+        /* GEOLOCATION & PLACES - Grant location permissions */
         getLocationPermission();
 
         if (locationPermissionGranted){
@@ -98,32 +87,31 @@ public class ListViewFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        /** GOOGLE PLACES with API and MVVM
-         * - setupViewModel()
-         */
+        /* GOOGLE PLACES with API and MVVM - setupViewModel() */
         setupViewModel();
 
-        /** LAYOUT
+        /* LAYOUT
          * - CONNECT THE LIST VIEW FRAGMENT
          * - OVERRIDE THE RECYCLERVIEW WIDGET
          * - POPULATE ITEMS IN THE RECYCLERVIEW WIDGET
          */
         mFragmentListView = FragmentListViewBinding.inflate(inflater, container, false);
-        mRecyclerView = (RecyclerView) mFragmentListView.listOfPlaces;
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL, false));
+        /* The RecyclerView which displays the list of places
+         * Suppress warning is safe because variable is initialized in onCreate
+         */
+        RecyclerView recyclerView = (RecyclerView) mFragmentListView.listOfPlaces;
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL, false));
         mListViewAdapter = new ListViewAdapter(mNearbyPlacesList, mUsersList);
-        mRecyclerView.setAdapter(mListViewAdapter);
+        recyclerView.setAdapter(mListViewAdapter);
 
         // Inflate the layout for this fragment
         return mFragmentListView.getRoot();
     }
 
-    /** GEOLOCATION
-     * - Request Location Permission
-     */
+    /* GEOLOCATION - Request Location Permission */
     private void getLocationPermission() {
         if (ContextCompat.checkSelfPermission(requireContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -136,9 +124,7 @@ public class ListViewFragment extends Fragment {
         }
     }
 
-    /** GEOLOCATION
-     * - What's happen with the Location Permission result
-     */
+    /* GEOLOCATION - What's happen with the Location Permission result */
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
@@ -156,63 +142,45 @@ public class ListViewFragment extends Fragment {
         }
     }
 
-    /** GEOLOCATION
-     * - Display the device location on the map
-     */
+    /** GEOLOCATION - Display the device location on the map */
     @SuppressLint("MissingPermission")
     private void getDeviceLocation() {
 
         Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
-        locationResult.addOnCompleteListener(requireActivity(), new OnCompleteListener<Location>() {
-            @Override
-            public void onComplete(@NonNull Task<Location> task) {
-                deviceLatitude = task.getResult().getLatitude();
-                deviceLongitude = task.getResult().getLongitude();
-                displayView();
-                mListViewAdapter.setLocation(deviceLatitude, deviceLongitude);
-            }
+        locationResult.addOnCompleteListener(requireActivity(), task -> {
+            deviceLatitude = task.getResult().getLatitude();
+            deviceLongitude = task.getResult().getLongitude();
+            displayView();
+            mListViewAdapter.setLocation(deviceLatitude, deviceLongitude);
         });
     }
 
-    /** GOOGLE PLACES
-     * - Show places around the device location
-     */
+    /* GOOGLE PLACES - Show places around the device location */
+    @SuppressLint("NotifyDataSetChanged")
     @SuppressWarnings("MissingPermission")
     private void displayView() {
 
-        /** GOOGLE PLACES with API and MVVM **/
+        /* GOOGLE PLACES with API and MVVM */
         int RADIUS = 2000;
-        mListViewModel.loadNearbyPlaces(deviceLatitude, deviceLongitude, RADIUS).observe(getViewLifecycleOwner(), new Observer<List<NearbyPlaceModel>>() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onChanged(List<NearbyPlaceModel> listViewState) {
-                mNearbyPlacesList.clear();
-                mNearbyPlacesList.addAll(listViewState);
-                /*TODO: Trier la liste par ordre croissant de distance avec l'utilisateur */
-                mListViewAdapter.notifyDataSetChanged();
+        mListViewModel.loadNearbyPlaces(deviceLatitude, deviceLongitude, RADIUS).observe(getViewLifecycleOwner(), listViewState -> {
+            mNearbyPlacesList.clear();
+            mNearbyPlacesList.addAll(listViewState);
+            mListViewAdapter.notifyDataSetChanged();
 
-                ItemClickSupport.addTo(mFragmentListView.listOfPlaces, R.layout.place_attributes)
-                        .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-                            @Override
-                            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                                NearbyPlaceModel nearbyPlace = listViewState.get(position);
-                                // Start a new PlaceDetailsActivity
-                                Intent placeDetailsIntent = new Intent(getActivity(), PlaceDetailsActivity.class);
-                                placeDetailsIntent.putExtra("PLACE_ID", nearbyPlace.getPlaceId());
-                                startActivity(placeDetailsIntent);
-                            }
-                        });
-            }
+            ItemClickSupport.addTo(mFragmentListView.listOfPlaces, R.layout.place_attributes)
+                    .setOnItemClickListener((recyclerView, position, v) -> {
+                        NearbyPlaceModel nearbyPlace = listViewState.get(position);
+                        // Start a new PlaceDetailsActivity
+                        Intent placeDetailsIntent = new Intent(getActivity(), PlaceDetailsActivity.class);
+                        placeDetailsIntent.putExtra("PLACE_ID", nearbyPlace.getPlaceId());
+                        startActivity(placeDetailsIntent);
+                    });
         });
 
-        mListViewModel.getAllUsers().observe(getViewLifecycleOwner(), new Observer<List<UserModel>>() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onChanged(List<UserModel> workmatesState) {
-                mUsersList.clear();
-                mUsersList.addAll(workmatesState);
-                mListViewAdapter.notifyDataSetChanged();
-            }
+        mListViewModel.getAllUsers().observe(getViewLifecycleOwner(), workmatesState -> {
+            mUsersList.clear();
+            mUsersList.addAll(workmatesState);
+            mListViewAdapter.notifyDataSetChanged();
         });
     }
 }

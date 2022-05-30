@@ -16,7 +16,6 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -35,8 +34,6 @@ import com.example.go4lunch.ui.workmates.WorkmatesFragment;
 import com.example.go4lunch.worker.NotifyWorker;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -56,9 +53,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     // Location Permission
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean mLocationPermissionGranted;
-    // Geolocation and PlaceAutocomplete
-    //private double mLatitude;
-    //private double mLongitude;
 
     // MVVM - Object declaration
     private HomeViewModel mHomeViewModel;
@@ -69,7 +63,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     final String[] SETTINGS_ITEM_LIST = new String[]{"Notification"};
 
     private DrawerLayout mDrawerLayout;
-    private Toolbar mToolbar;
     private MapViewFragment mapViewFragment;
 
     final boolean[] mCheckedItems = new boolean[SETTINGS_ITEM_LIST.length];
@@ -99,13 +92,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         mDrawerLayout = findViewById(R.id.home_drawerlayout);
 
         // NAVIGATION DRAWER + TOOLBAR - Setup toolbar as an ActionBar
-        mToolbar = findViewById(R.id.home_toolbar);
-        setSupportActionBar(mToolbar);
+        Toolbar toolbar = findViewById(R.id.home_toolbar);
+        setSupportActionBar(toolbar);
 
         mapViewFragment = new MapViewFragment();
 
         // NAVIGATION DRAWER + TOOLBAR - Setup Hamburger Icon in the ActionBar and connect to DrawerLayout
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -139,7 +132,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     //SEARCH VIEW
-    private SearchView.OnQueryTextListener mOnQueryTextListener = new SearchView.OnQueryTextListener() {
+    private final SearchView.OnQueryTextListener mOnQueryTextListener = new SearchView.OnQueryTextListener() {
         @Override
         public boolean onQueryTextSubmit(String query) {
             mHomeViewModel.setSearchViewQuery(query);
@@ -154,21 +147,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     };
 
     //BOTTOM NAVIGATION - When an item is selected
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @SuppressLint("NonConstantResourceId")
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.nav_mapViewFragment:
                     mHomeViewModel.setSearchViewQuery(SEARCH_VIEW_QUERY_STATUS);
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, mapViewFragment).commit();
-
-                    /*
-                    // GOOGLE MAPS - Display the map
-                    SupportMapFragment mapViewFragment = SupportMapFragment.newInstance();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, mapViewFragment).commit();
-                    mapViewFragment.getMapAsync(mOnMapReadyCallback);
-                     */
-
                     return true;
 
                 case R.id.nav_listViewFragment:
@@ -186,6 +172,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     };
 
     // NAVIGATION DRAWER - When an item is selected
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -202,21 +189,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_settings:
-                //showToast("Go to your settings");
                 showSettingsAlertDialog();
                 break;
 
             case R.id.nav_logout:
-                //showToast("SignOut called");
-                mHomeViewModel.signOut(this).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        finish();
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
-/*                        finishAffinity(); // Close all activites
-                        System.exit(0);  // Releasing ressources*/
-                    }
+                mHomeViewModel.signOut(this).addOnSuccessListener(unused -> {
+                    finish();
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
                 });
                 break;
         }
@@ -243,17 +223,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         //we set a tag to be able to cancel all work of this type if needed
         final String WORK_TAG = "notificationWork";
 
-        /*OneTimeWorkRequest notificationWork = new OneTimeWorkRequest.Builder(NotifyWorker.class)
-                .setInitialDelay(calculateDelay(event.getDate()), TimeUnit.MILLISECONDS)
-                .addTag(WORK_TAG)
-                .build();
-
-        WorkManager.getInstance(context)
-                .enqueue(notificationWork);
-        // we can use this form to determine what happens to the existing stack
-        WorkManager.getInstance(context)
-                .beginUniqueWork(WORK_TAG, ExistingWorkPolicy.REPLACE, notificationWork);*/
-
         mHomeViewModel.loadUserDetails().observe(this, userDetailsViewState ->{
             if (userDetailsViewState.getPlaceId() != null){
                 PeriodicWorkRequest notificationWork =
@@ -274,25 +243,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
 
         builder.setTitle(R.string.alert_dialog_settings_title);
-        builder.setMultiChoiceItems(SETTINGS_ITEM_LIST, mCheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                mCheckedItems[i] = b;
-            }
-        });
+        builder.setMultiChoiceItems(SETTINGS_ITEM_LIST, mCheckedItems, (dialogInterface, i, b) -> mCheckedItems[i] = b);
 
-        builder.setPositiveButton(R.string.alert_dialog_settings_save_button_label, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                saveSettingsOnDevice();
-            }
-        });
+        builder.setPositiveButton(R.string.alert_dialog_settings_save_button_label, (dialogInterface, i) -> saveSettingsOnDevice());
 
-        builder.setNegativeButton(R.string.alert_dialog_settings_cancel_button_label, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+        builder.setNegativeButton(R.string.alert_dialog_settings_cancel_button_label, (dialogInterface, i) -> {
 
-            }
         });
 
         builder.create().show();
@@ -316,7 +272,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         // Once the changes have been made,
         // we need to commit to apply those changes made,
         // otherwise, it will throw an error
-        myEdit.commit();
+        myEdit.apply();
     }
 
     // GOOGLE PLACE AUTOCOMPLETE - Request Location Permission
@@ -354,14 +310,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @SuppressLint("MissingPermission")
     private void getDeviceLocation() {
         Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
-        locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
-            @Override
-            public void onComplete(@NonNull Task<Location> task) {
-                LocationModel myLocation = new LocationModel();
-                myLocation.setLat(task.getResult().getLatitude());
-                myLocation.setLng(task.getResult().getLongitude());
-                mHomeViewModel.setMyLocation(myLocation);
-            }
+        locationResult.addOnCompleteListener(this, task -> {
+            LocationModel myLocation = new LocationModel();
+            myLocation.setLat(task.getResult().getLatitude());
+            myLocation.setLng(task.getResult().getLongitude());
+            mHomeViewModel.setMyLocation(myLocation);
         });
     }
 

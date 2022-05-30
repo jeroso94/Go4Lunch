@@ -19,12 +19,6 @@ public interface PlaceService {
                                                 @Query("radius") String radius,
                                                 @Query("type") String type);
 
-    /*
-    @GET("/maps/api/place/nearbysearch/json")
-    Call<NearbyResultModel> goNextPageNearbyResult(@Query("key") String apiKey,
-                                                   @Query("pagetoken") String pageToken);
-     */
-
     @GET("/maps/api/place/details/json")
     Call<PlaceDetailsResultModel> requestPlaceDetailsSearch(@Query("key") String apiKey,
                                                             @Query("place_id") String placeId);

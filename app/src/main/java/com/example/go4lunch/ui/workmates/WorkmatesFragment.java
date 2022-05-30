@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,16 +29,10 @@ public class WorkmatesFragment extends Fragment {
     private FragmentWorkmatesBinding mFragmentWorkmates;
 
     private WorkmatesAdapter mWorkmatesAdapter;
-    private List<UserModel> mUsersList = new ArrayList<>();
+    private final List<UserModel> mUsersList = new ArrayList<>();
 
     /** MVVM - Object declaration **/
     private WorkmatesViewModel mWorkmatesViewModel;
-
-    /** The RecyclerView which displays the list of places
-     * Suppress warning is safe because variable is initialized in onCreate
-     */
-    @NonNull
-    private RecyclerView mRecyclerView;
 
     public WorkmatesFragment() {
         // Required empty public constructor
@@ -50,21 +43,24 @@ public class WorkmatesFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         setupViewModel();
 
-        /** LAYOUT
+        /* LAYOUT
          * - CONNECT THE LIST VIEW FRAGMENT
          * - OVERRIDE THE RECYCLERVIEW WIDGET
          * - POPULATE ITEMS IN THE RECYCLERVIEW WIDGET
          */
         mFragmentWorkmates = FragmentWorkmatesBinding.inflate(inflater, container, false);
-        mRecyclerView = (RecyclerView) mFragmentWorkmates.listOfWorkmates;
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL, false));
+        /* The RecyclerView which displays the list of places
+         * Suppress warning is safe because variable is initialized in onCreate
+         */
+        RecyclerView recyclerView = (RecyclerView) mFragmentWorkmates.listOfWorkmates;
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL, false));
         mWorkmatesAdapter = new WorkmatesAdapter(getContext(), mUsersList);
-        mRecyclerView.setAdapter(mWorkmatesAdapter);
+        recyclerView.setAdapter(mWorkmatesAdapter);
 
         displayView();
 
@@ -74,24 +70,21 @@ public class WorkmatesFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     private void displayView() {
-        mWorkmatesViewModel.loadUsers().observe(getViewLifecycleOwner(), new Observer<List<UserModel>>() {
-            @Override
-            public void onChanged(List<UserModel> workmatesState) {
-                mUsersList.clear();
-                mUsersList.addAll(workmatesState);
-                mWorkmatesAdapter.notifyDataSetChanged();
+        mWorkmatesViewModel.loadUsers().observe(getViewLifecycleOwner(), workmatesState -> {
+            mUsersList.clear();
+            mUsersList.addAll(workmatesState);
+            mWorkmatesAdapter.notifyDataSetChanged();
 
-                ItemClickSupport.addTo(mFragmentWorkmates.listOfWorkmates, R.layout.workmate_attributes)
-                        .setOnItemClickListener((recyclerView, position, v) -> {
-                            UserModel workmate = mUsersList.get(position);
-                            if (workmate.getPlaceId() != null) {
-                                // Start a new PlaceDetailsActivity
-                                Intent placeDetailsIntent = new Intent(WorkmatesFragment.this.getActivity(), PlaceDetailsActivity.class);
-                                placeDetailsIntent.putExtra("PLACE_ID", workmate.getPlaceId());
-                                WorkmatesFragment.this.startActivity(placeDetailsIntent);
-                            }
-                        });
-            }
+            ItemClickSupport.addTo(mFragmentWorkmates.listOfWorkmates, R.layout.workmate_attributes)
+                    .setOnItemClickListener((recyclerView, position, v) -> {
+                        UserModel workmate = mUsersList.get(position);
+                        if (workmate.getPlaceId() != null) {
+                            // Start a new PlaceDetailsActivity
+                            Intent placeDetailsIntent = new Intent(WorkmatesFragment.this.getActivity(), PlaceDetailsActivity.class);
+                            placeDetailsIntent.putExtra("PLACE_ID", workmate.getPlaceId());
+                            WorkmatesFragment.this.startActivity(placeDetailsIntent);
+                        }
+                    });
         });
     }
 

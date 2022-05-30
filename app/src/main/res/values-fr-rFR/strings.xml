@@ -45,4 +45,5 @@
     <string name="nav_drawer_item1_noresult">Aucune sélection</string>
     <string name="notification_default_text">Aucune données à afficher</string>
     <string name="notification_enabled_without_placeId_stored">Choisir un établissement d\'abord</string>
+    <string name="the_workmate_empty_avatar">Avatar collègue vide</string>
 </resources>

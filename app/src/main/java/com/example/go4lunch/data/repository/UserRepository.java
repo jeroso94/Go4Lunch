@@ -5,22 +5,18 @@ import static android.content.ContentValues.TAG;
 import android.content.Context;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.go4lunch.model.UserModel;
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,15 +90,12 @@ public class UserRepository {
         String uid = this.readCurrentUserUID();
         MutableLiveData<UserModel> mutableUser = new MutableLiveData<>();
         if(uid != null){
-            this.readUsersCollection().document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        UserModel user = task.getResult().toObject(UserModel.class);
-                        mutableUser.setValue(user);
-                    } else {
-                        Log.d(TAG, "Error getting document fields or sub-collection: ", task.getException());
-                    }
+            this.readUsersCollection().document(uid).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    UserModel user = task.getResult().toObject(UserModel.class);
+                    mutableUser.setValue(user);
+                } else {
+                    Log.d(TAG, "Error getting document fields or sub-collection: ", task.getException());
                 }
             });
             return mutableUser;
@@ -116,18 +109,15 @@ public class UserRepository {
         MutableLiveData <List<UserModel>> mutableUsersList = new MutableLiveData<>();
         List<UserModel> usersList = new ArrayList<>();
         this.readUsersCollection().get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                usersList.add(document.toObject(UserModel.class));
-                            }
-                            mutableUsersList.setValue(usersList);
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d(TAG, document.getId() + " => " + document.getData());
+                            usersList.add(document.toObject(UserModel.class));
                         }
+                        mutableUsersList.setValue(usersList);
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
                     }
                 });
         return mutableUsersList;
@@ -138,20 +128,17 @@ public class UserRepository {
         String uid = this.readCurrentUserUID();
         List<String> newLikesList = new ArrayList<>();
         if (uid != null) {
-            this.readUsersCollection().document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        UserModel user = task.getResult().toObject(UserModel.class);
-                        assert user != null;
-                        newLikesList.addAll(user.getLikesList());
-                        if (!newLikesList.contains(like)){
-                            newLikesList.add(like);
-                            readUsersCollection().document(uid).update(LIKE_FIELD, newLikesList);
-                        }
-                    } else {
-                        Log.d(TAG, "Error getting document fields or sub-collection: ", task.getException());
+            this.readUsersCollection().document(uid).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    UserModel user = task.getResult().toObject(UserModel.class);
+                    assert user != null;
+                    newLikesList.addAll(user.getLikesList());
+                    if (!newLikesList.contains(like)){
+                        newLikesList.add(like);
+                        readUsersCollection().document(uid).update(LIKE_FIELD, newLikesList);
                     }
+                } else {
+                    Log.d(TAG, "Error getting document fields or sub-collection: ", task.getException());
                 }
             });
         }

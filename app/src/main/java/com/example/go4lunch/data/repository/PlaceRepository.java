@@ -29,7 +29,6 @@ public class PlaceRepository {
 
     private final MutableLiveData<String> mSearchViewQuery = new MutableLiveData<>();
     private final MutableLiveData<LocationModel> mMyLocation = new MutableLiveData<>();
-    private final int RADIUS = 2000;
 
     private final PlaceService mPlaceService;
 
@@ -116,7 +115,7 @@ public class PlaceRepository {
     }
 
     public int getRADIUS() {
-        return RADIUS;
+        return 2000;
     }
 
     /* SETTERS */
