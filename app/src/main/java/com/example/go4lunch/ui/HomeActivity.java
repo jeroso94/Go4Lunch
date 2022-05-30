@@ -69,6 +69,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
+    private SearchView mSearchView;
     private MapViewFragment mapViewFragment;
 
     final boolean[] mCheckedItems = new boolean[SETTINGS_ITEM_LIST.length];
@@ -121,10 +122,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
 
         // SEARCH VIEW - Setup SearchView
-        SearchView searchView = findViewById(R.id.home_searchview);
-        searchView.setOnQueryTextListener(mOnQueryTextListener);
-        searchView.setQueryHint("Type here to search");
-        searchView.setBackgroundColor(getResources().getColor(R.color.white));
+        mSearchView = findViewById(R.id.home_searchview);
+        mSearchView.setOnQueryTextListener(mOnQueryTextListener);
+        mSearchView.setQueryHint("Type here to search");
+        mSearchView.setBackgroundColor(getResources().getColor(R.color.white));
     }
 
     // NAVIGATION DRAWER & ANDROID UI - When BACK is pressed
@@ -160,6 +161,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.nav_mapViewFragment:
+                    mSearchView = findViewById(R.id.home_searchview);
+                    mSearchView.setVisibility(View.VISIBLE);
                     mHomeViewModel.setSearchViewQuery(SEARCH_VIEW_QUERY_STATUS);
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, mapViewFragment).commit();
                     return true;
@@ -167,11 +170,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 case R.id.nav_listViewFragment:
                     ListViewFragment listViewFragment = new ListViewFragment();
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, listViewFragment).commit();
+                    mSearchView.setVisibility(View.VISIBLE);
                     return true;
 
                 case R.id.nav_workmatesFragment:
                     WorkmatesFragment workmatesFragment = new WorkmatesFragment();
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, workmatesFragment).commit();
+                    mSearchView.setVisibility(View.GONE);
                     return true;
             }
             return false;
