@@ -35,7 +35,7 @@
     <string name="like_label">J\'AIME</string>
     <string name="website_label">SITE WEB</string>
     <string name="workmate_choice">Choix</string>
-    <string name="alert_dialog_settings_title">Paramètres...</string>
+    <string name="alert_dialog_settings_title">Paramètres…</string>
     <string name="alert_dialog_settings_cancel_button_label">Annuler</string>
     <string name="alert_dialog_settings_save_button_label">Valider</string>
     <string name="workmates_choice_todo">n\'a pas encore enregistré de choix</string>
@@ -46,4 +46,9 @@
     <string name="notification_default_text">Aucune données à afficher</string>
     <string name="notification_enabled_without_placeId_stored">Choisir un établissement d\'abord</string>
     <string name="the_workmate_empty_avatar">Avatar collègue vide</string>
+    <string name="restaurant_screenshot">Prise de vue de l\'établissement</string>
+    <string name="register_button">Bouton d\'inscription</string>
+    <string name="call_button">Bouton d\'appel</string>
+    <string name="like_button">Bouton Like</string>
+    <string name="website_button">Bouton d\'accès URL</string>
 </resources>

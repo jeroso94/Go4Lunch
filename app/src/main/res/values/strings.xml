@@ -45,7 +45,7 @@
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
 
     <!-- HOME ACTIVITY  -   NAVIGATION DRAWER MENU  -   SETTINGS ALERT DIALOG -->
-    <string name="alert_dialog_settings_title">Settings...</string>
+    <string name="alert_dialog_settings_title">Settings…</string>
     <string name="alert_dialog_settings_cancel_button_label">Cancel</string>
     <string name="alert_dialog_settings_save_button_label">Save</string>
 
@@ -64,6 +64,7 @@
     <string name="place_attribute_distance" translatable="false">Distance(m)</string>
 
     <!-- DETAILS ACTIVITY  -->
+    <string name="restaurant_screenshot">Restaurant screenshot</string>
     <string name="call_label">CALL</string>
     <string name="like_label">LIKE</string>
     <string name="website_label">WEBSITE</string>
@@ -81,5 +82,10 @@
     <string name="notification_title" translatable="false">Go4Lunch</string>
     <string name="notification_default_text">No data to display</string>
     <string name="notification_enabled_without_placeId_stored">Select a place to lunch first</string>
+    <string name="register_button">Register button</string>
+    <string name="call_button">Call button</string>
+    <string name="like_button">Like button</string>
+    <string name="website_button">Website button</string>
+    <string name="go4lunch_logo" translatable="false">Go4Lunch logo</string>
 
 </resources>

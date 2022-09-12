@@ -70,11 +70,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private SearchView mSearchView;
-    private MapViewFragment mapViewFragment;
+    private MapViewFragment mMapViewFragment;
+    private ListViewFragment mListViewFragment;
+    private WorkmatesFragment mWorkmatesFragment;
 
     final boolean[] mCheckedItems = new boolean[SETTINGS_ITEM_LIST.length];
     final List<String> mSelectedItems = Arrays.asList(SETTINGS_ITEM_LIST);
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,7 +105,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.home_toolbar);
         setSupportActionBar(toolbar);
 
-        mapViewFragment = new MapViewFragment();
+        mMapViewFragment = new MapViewFragment();
+        mListViewFragment = new ListViewFragment();
+        mWorkmatesFragment = new WorkmatesFragment();
 
         // NAVIGATION DRAWER + TOOLBAR - Setup Hamburger Icon in the ActionBar and connect to DrawerLayout
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -125,7 +130,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         mSearchView = findViewById(R.id.home_searchview);
         mSearchView.setOnQueryTextListener(mOnQueryTextListener);
         mSearchView.setQueryHint("Type here to search");
-        mSearchView.setBackgroundColor(getResources().getColor(R.color.white));
     }
 
     // NAVIGATION DRAWER & ANDROID UI - When BACK is pressed
@@ -164,19 +168,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     mSearchView = findViewById(R.id.home_searchview);
                     mSearchView.setVisibility(View.VISIBLE);
                     mHomeViewModel.setSearchViewQuery(SEARCH_VIEW_QUERY_STATUS);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, mapViewFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, mMapViewFragment).commit();
                     return true;
 
                 case R.id.nav_listViewFragment:
-                    ListViewFragment listViewFragment = new ListViewFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, listViewFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, mListViewFragment).commit();
                     mSearchView.setVisibility(View.VISIBLE);
                     return true;
 
                 case R.id.nav_workmatesFragment:
-                    WorkmatesFragment workmatesFragment = new WorkmatesFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, workmatesFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, mWorkmatesFragment).commit();
                     mSearchView.setVisibility(View.GONE);
+
                     return true;
             }
             return false;
@@ -235,20 +238,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     // SETTINGS
-    private void loadSettingsFromDevice() {
-
-        // Retrieving the value using its keys the file name
-        // must be same in both saving and retrieving the data
-        SharedPreferences sharedPreferences = getSharedPreferences("Go4LunchSharedPref", MODE_PRIVATE);
-        for (int i = 0; i < SETTINGS_ITEM_LIST.length  ; i++){
-            mCheckedItems[i] = Boolean.parseBoolean(sharedPreferences.getString(SETTINGS_ITEM_LIST[i],"false"));
-            Log.d(TAG, "loadSettingsFromDevice: " + SETTINGS_ITEM_LIST[i] + "-" + mCheckedItems[i]);
-            if (SETTINGS_ITEM_LIST[i].equals("Notification") && mCheckedItems[i]){
-                enableNotifyWorker();
-            }
-        }
-    }
-
     private void enableNotifyWorker() {
         //we set a tag to be able to cancel all work of this type if needed
         final String WORK_TAG = "notificationWork";
@@ -282,6 +271,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
 
         builder.create().show();
+    }
+
+    private void loadSettingsFromDevice() {
+
+        // Retrieving the value using its keys the file name
+        // must be same in both saving and retrieving the data
+        SharedPreferences sharedPreferences = getSharedPreferences("Go4LunchSharedPref", MODE_PRIVATE);
+        for (int i = 0; i < SETTINGS_ITEM_LIST.length  ; i++){
+            mCheckedItems[i] = Boolean.parseBoolean(sharedPreferences.getString(SETTINGS_ITEM_LIST[i],"false"));
+            Log.d(TAG, "loadSettingsFromDevice: " + SETTINGS_ITEM_LIST[i] + "-" + mCheckedItems[i]);
+            if (SETTINGS_ITEM_LIST[i].equals("Notification") && mCheckedItems[i]){
+                enableNotifyWorker();
+            }
+        }
     }
 
     private void saveSettingsOnDevice() {

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="red_500">#F44336</color>
-    <color name="red_700">#D32F2F</color>
+    <color name="red_700">#88D32F2F</color>
     <color name="lime_200">#E6EE9C</color>
     <color name="lime_700">#AFB42B</color>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#FFFFFF</color>
 
     <!--COLORS FOR SIGN-IN LAYOUT-->
     <color name="signin_email">#D32F2F</color>
