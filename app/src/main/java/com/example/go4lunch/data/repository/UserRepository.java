@@ -133,10 +133,8 @@ public class UserRepository {
                     UserModel user = task.getResult().toObject(UserModel.class);
                     assert user != null;
                     newLikesList.addAll(user.getLikesList());
-                    if (!newLikesList.contains(like)){
-                        newLikesList.add(like);
-                        readUsersCollection().document(uid).update(LIKE_FIELD, newLikesList);
-                    }
+                    if(!newLikesList.contains(like)){ newLikesList.add(like); } else { newLikesList.remove(like);}
+                    readUsersCollection().document(uid).update(LIKE_FIELD, newLikesList);
                 } else {
                     Log.d(TAG, "Error getting document fields or sub-collection: ", task.getException());
                 }

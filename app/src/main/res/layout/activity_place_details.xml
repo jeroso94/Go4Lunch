@@ -20,7 +20,8 @@
             android:scaleType="fitXY"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/LinearLayout"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            tools:srcCompat="@tools:sample/backgrounds/scenic"
+            android:contentDescription="@string/restaurant_screenshot" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatingActionButton"
@@ -30,12 +31,14 @@
             android:layout_marginBottom="16dp"
             android:backgroundTint="@color/white"
             android:clickable="true"
+            android:focusable="true"
             app:elevation="9dp"
             app:layout_constraintBottom_toTopOf="@id/LinearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/picture"
             app:maxImageSize="32dp"
-            app:srcCompat="@drawable/ic_baseline_check_circle_outline" />
+            app:srcCompat="@drawable/ic_baseline_check_circle_outline"
+            android:contentDescription="@string/register_button" />
 
         <LinearLayout
             android:id="@+id/LinearLayout"
@@ -81,7 +84,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="16dp"
+        android:baselineAligned="false">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -98,7 +102,9 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/white"
                 app:srcCompat="@drawable/ic_baseline_phone"
-                app:tint="@color/orange_text" />
+                app:tint="@color/orange_text"
+                android:contentDescription="@string/call_button"
+                tools:ignore="NestedWeights" />
 
             <TextView
                 android:id="@+id/call_label"
@@ -126,7 +132,9 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/white"
                 app:srcCompat="@drawable/ic_baseline_star_outline"
-                app:tint="@color/orange_text" />
+                app:tint="@color/orange_text"
+                android:contentDescription="@string/like_button"
+                tools:ignore="NestedWeights" />
 
             <TextView
                 android:id="@+id/like_label"
@@ -153,7 +161,9 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/white"
                 app:srcCompat="@drawable/ic_baseline_public"
-                app:tint="@color/orange_text" />
+                app:tint="@color/orange_text"
+                android:contentDescription="@string/website_button"
+                tools:ignore="NestedWeights" />
 
             <TextView
                 android:id="@+id/website_label"
