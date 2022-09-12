@@ -69,6 +69,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
+            android:scaleX="0.9"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/signin_block_2">
@@ -76,7 +77,7 @@
             <Button
                 android:id="@+id/signin_button_google"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:backgroundTint="@color/signin_google"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
@@ -90,7 +91,7 @@
             <Button
                 android:id="@+id/signin_button_twitter"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:backgroundTint="@color/signin_twitter"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
@@ -107,6 +108,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
+            android:scaleX="0.9"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@+id/signin_block_1"
             app:layout_constraintEnd_toEndOf="parent">
@@ -114,20 +116,21 @@
             <Button
                 android:id="@+id/signin_button_email"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:backgroundTint="@color/signin_email"
                 android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:paddingBottom="4dp"
                 android:text="@string/signin_button_email"
                 android:textAlignment="center"
                 android:textColor="#FFEE"
                 android:textSize="12sp"
-                app:icon="@drawable/ic_baseline_email" />
+                app:icon="@drawable/ic_baseline_email"
+                />
 
             <Button
                 android:id="@+id/signin_button_facebook"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:backgroundTint="@color/signin_facebook"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
