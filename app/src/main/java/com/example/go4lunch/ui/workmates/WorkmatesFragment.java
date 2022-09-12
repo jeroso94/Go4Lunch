@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.FragmentWorkmatesBinding;
 import com.example.go4lunch.model.UserModel;
+import com.example.go4lunch.ui.HomeActivity;
 import com.example.go4lunch.ui.ViewModelFactory;
 import com.example.go4lunch.ui.place_details.PlaceDetailsActivity;
 import com.example.go4lunch.utils.ItemClickSupport;
@@ -86,12 +88,5 @@ public class WorkmatesFragment extends Fragment {
                         }
                     });
         });
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    @Override
-    public void onResume() {
-        super.onResume();
-        mWorkmatesAdapter.notifyDataSetChanged();
     }
 }

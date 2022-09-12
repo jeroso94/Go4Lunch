@@ -52,7 +52,7 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.Work
         if (user.getPlaceName() != null) {
             holder.mWorkmateAttributesViewHolder.workmateChoice.setText(String.format("%s %s (%s)", user.getUsername(), mContext.getResources().getString(R.string.workmate_choice_done), user.getPlaceName()));
         } else {
-            holder.mWorkmateAttributesViewHolder.workmateChoice.setText(String.format("%s %s", user.getUsername(), mContext.getResources().getResourceName(R.string.workmates_choice_todo)));
+            holder.mWorkmateAttributesViewHolder.workmateChoice.setText(String.format("%s %s", user.getUsername(), mContext.getResources().getString(R.string.workmates_choice_todo)));
         }
     }
 
